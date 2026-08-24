@@ -344,7 +344,7 @@
           bizCta.textContent = "Copied!";
           setTimeout(() => {
             bizBtn.classList.remove("copied");
-            bizCta.textContent = "Decrypt";
+            bizCta.textContent = "Email →";
           }, 1600);
         });
         return;
@@ -354,7 +354,7 @@
       bizCta.textContent = "Copied!";
       setTimeout(() => {
         bizBtn.classList.remove("copied");
-        bizCta.textContent = "Decrypt";
+        bizCta.textContent = "Email →";
       }, 1600);
     });
   }

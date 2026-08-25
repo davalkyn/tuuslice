@@ -250,7 +250,7 @@ button:focus-visible {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 0 18px var(--glow)) drop-shadow(0 0 42px rgba(196, 64, 24, 0.28));
+  text-shadow: 0 0 18px var(--glow), 0 0 42px rgba(196, 64, 24, 0.28);
   animation: shimmer 8s ease-in-out infinite, emberFlicker 4.5s ease-in-out infinite;
   line-height: 1.15;
 }
@@ -261,15 +261,15 @@ button:focus-visible {
 }
 
 @keyframes emberFlicker {
-  0%, 100% { filter: drop-shadow(0 0 18px var(--glow)) drop-shadow(0 0 42px rgba(196, 64, 24, 0.28)); }
-  45% { filter: drop-shadow(0 0 26px var(--gold-bright)) drop-shadow(0 0 58px rgba(196, 64, 24, 0.4)); }
-  55% { filter: drop-shadow(0 0 12px var(--glow-soft)) drop-shadow(0 0 28px rgba(196, 64, 24, 0.16)); }
+  0%, 100% { text-shadow: 0 0 18px var(--glow), 0 0 42px rgba(196, 64, 24, 0.28); }
+  45% { text-shadow: 0 0 26px var(--gold-bright), 0 0 58px rgba(196, 64, 24, 0.4); }
+  55% { text-shadow: 0 0 12px var(--glow-soft), 0 0 28px rgba(196, 64, 24, 0.16); }
 }
 
 @keyframes emberFlickerSoft {
-  0%, 100% { filter: drop-shadow(0 0 12px var(--glow-soft)) drop-shadow(0 0 26px rgba(196, 64, 24, 0.18)); }
-  45% { filter: drop-shadow(0 0 18px var(--glow)) drop-shadow(0 0 36px rgba(196, 64, 24, 0.3)); }
-  55% { filter: drop-shadow(0 0 8px var(--glow-soft)) drop-shadow(0 0 18px rgba(196, 64, 24, 0.1)); }
+  0%, 100% { text-shadow: 0 0 12px var(--glow-soft), 0 0 26px rgba(196, 64, 24, 0.18); }
+  45% { text-shadow: 0 0 18px var(--glow), 0 0 36px rgba(196, 64, 24, 0.3); }
+  55% { text-shadow: 0 0 8px var(--glow-soft), 0 0 18px rgba(196, 64, 24, 0.1); }
 }
 
 .hero-tagline {
@@ -339,7 +339,7 @@ button:focus-visible {
   font-size: clamp(1.7rem, 4.5vw, 2.4rem);
   letter-spacing: 0.02em;
   color: var(--gold-bright);
-  filter: drop-shadow(0 0 12px var(--glow-soft)) drop-shadow(0 0 26px rgba(196, 64, 24, 0.18));
+  text-shadow: 0 0 12px var(--glow-soft), 0 0 26px rgba(196, 64, 24, 0.18);
   animation: emberFlickerSoft 4.5s ease-in-out infinite;
   margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
   display: flex;
@@ -436,7 +436,7 @@ button:focus-visible {
   font-size: 1.25rem;
   letter-spacing: 0.02em;
   color: var(--gold-bright);
-  filter: drop-shadow(0 0 6px var(--glow-soft));
+  text-shadow: 0 0 6px var(--glow-soft);
 }
 .link-handle {
   font-family: var(--font-mono);
@@ -527,7 +527,7 @@ button:focus-visible {
   font-size: 1.2rem;
   letter-spacing: 0.02em;
   color: var(--gold-bright);
-  filter: drop-shadow(0 0 6px var(--glow-soft));
+  text-shadow: 0 0 6px var(--glow-soft);
 }
 .support-value {
   font-size: 0.82rem;

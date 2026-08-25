@@ -9,7 +9,29 @@
   /* ---------------- starfield background ---------------- */
 
   const bgCanvas = document.getElementById("bg-canvas");
-  const bgCtx = bgCanvas.getContext("2d");
+  const bgCtx = bgCanvas.getContext("2d", { alpha: false });
+
+  function makeGlowSprite(size, rgb) {
+    const c = document.createElement("canvas");
+    c.width = c.height = size;
+    const sctx = c.getContext("2d");
+    const r = size / 2;
+    const grad = sctx.createRadialGradient(r, r, 0, r, r, r);
+    grad.addColorStop(0, `rgba(${rgb},1)`);
+    grad.addColorStop(0.4, `rgba(${rgb},0.5)`);
+    grad.addColorStop(1, `rgba(${rgb},0)`);
+    sctx.fillStyle = grad;
+    sctx.beginPath();
+    sctx.arc(r, r, r, 0, Math.PI * 2);
+    sctx.fill();
+    return c;
+  }
+
+  const GOLD_RGB = "242,193,78";
+  const AMBER_RGB = "255,184,77";
+  const starSpriteGold = makeGlowSprite(16, GOLD_RGB);
+  const starSpriteAmber = makeGlowSprite(16, AMBER_RGB);
+  const emberSprite = makeGlowSprite(12, AMBER_RGB);
 
   let stars = [];
   let shootingStars = [];
@@ -60,23 +82,21 @@
   let bgFrame = 0;
 
   function drawStars(t) {
-    bgCtx.clearRect(0, 0, w, h);
+    bgCtx.fillStyle = "#050302";
+    bgCtx.fillRect(0, 0, w, h);
 
     for (const s of stars) {
       const twinkle = Math.sin(t * s.twinkleSpeed + s.phase) * 0.35 + 0.65;
       const alpha = s.baseAlpha * twinkle;
       const dx = shiftX * s.depth;
       const dy = shiftY * s.depth;
-      const color = s.hue === "amber" ? "255,184,77" : "242,193,78";
+      const sprite = s.hue === "amber" ? starSpriteAmber : starSpriteGold;
+      const size = 8 + s.r * 10;
 
-      bgCtx.beginPath();
-      bgCtx.fillStyle = `rgba(${color},${alpha})`;
-      bgCtx.shadowColor = `rgba(${color},${Math.min(alpha, 0.8)})`;
-      bgCtx.shadowBlur = s.r > 1 ? 6 : 2;
-      bgCtx.arc(s.x + dx, s.y + dy, s.r, 0, Math.PI * 2);
-      bgCtx.fill();
+      bgCtx.globalAlpha = alpha;
+      bgCtx.drawImage(sprite, s.x + dx - size / 2, s.y + dy - size / 2, size, size);
     }
-    bgCtx.shadowBlur = 0;
+    bgCtx.globalAlpha = 1;
 
     maybeSpawnShootingStar();
     for (let i = shootingStars.length - 1; i >= 0; i--) {
@@ -161,7 +181,7 @@
     window.addEventListener("mousemove", (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-      if (!reduceMotion && Math.random() < 0.5) {
+      if (!reduceMotion && Math.random() < 0.4) {
         embers.push({
           x: mouseX,
           y: mouseY,
@@ -170,7 +190,7 @@
           life: 1,
           r: Math.random() * 1.6 + 0.6,
         });
-        if (embers.length > 120) embers.splice(0, embers.length - 120);
+        if (embers.length > 90) embers.splice(0, embers.length - 90);
       }
     }, { passive: true });
 
@@ -220,14 +240,11 @@
           embers.splice(i, 1);
           continue;
         }
-        fxCtx.beginPath();
-        fxCtx.fillStyle = `rgba(255,184,77,${p.life * 0.8})`;
-        fxCtx.shadowColor = "rgba(255,184,77,0.8)";
-        fxCtx.shadowBlur = 6;
-        fxCtx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2);
-        fxCtx.fill();
+        const size = p.r * p.life * 8;
+        fxCtx.globalAlpha = p.life * 0.8;
+        fxCtx.drawImage(emberSprite, p.x - size / 2, p.y - size / 2, size, size);
       }
-      fxCtx.shadowBlur = 0;
+      fxCtx.globalAlpha = 1;
 
       fxFrame = requestAnimationFrame(fxTick);
     }

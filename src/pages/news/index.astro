@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EmptyState from "../../components/EmptyState.astro";
+import JoinCTA from "../../components/JoinCTA.astro";
+import PageHead from "../../components/PageHead.astro";
+import PostCard from "../../components/PostCard.astro";
+import StatusPill from "../../components/StatusPill.astro";
+import { getPosts } from "../../lib/content";
+
+const posts = await getPosts("news");
+---
+
+<BaseLayout title="GTA 6 News" description="GTA 6 news in short: every story summarized, labeled verified or rumor, and linked to the original source.">
+  <PageHead
+    eyebrow="News desk"
+    title="GTA 6"
+    accent="news"
+    lead="Short summaries of what actually happened, each one labeled and linked to the original reporting. No copy-paste, no clickbait."
+  >
+    <div class="legend">
+      <StatusPill status="verified" /><span class="faint">Confirmed by Rockstar, Take-Two or a primary source</span>
+      <StatusPill status="rumor" /><span class="faint">Reported, not confirmed</span>
+      <StatusPill status="unconfirmed" /><span class="faint">Still waiting on details</span>
+    </div>
+  </PageHead>
+
+  <section class="wrap section" style="padding-top: 0">
+    {
+      posts.length ? (
+        <div class="grid grid--3" data-reveal-group>
+          {posts.map((post) => (
+            <PostCard post={post} morph headingLevel="h2" />
+          ))}
+        </div>
+      ) : (
+        <EmptyState title="No news yet" text="The first stories are on their way." />
+      )
+    }
+  </section>
+
+  <div class="wrap section"><JoinCTA /></div>
+</BaseLayout>
+
+<style>
+  .legend {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 0.8rem;
+    align-items: center;
+    margin-top: 0.5rem;
+    font-size: 0.88rem;
+  }
+  .legend :global(.pill) { justify-self: start; }
+</style>

@@ -1,0 +1,113 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import GearCard from "../components/GearCard.astro";
+import Icon from "../components/Icon.astro";
+import PageHead from "../components/PageHead.astro";
+import SectionHead from "../components/SectionHead.astro";
+import gear from "../data/gear.json";
+
+const chain = [
+  { icon: "gamepad", name: "Xbox Series S", note: "Runs the game" },
+  { icon: "link", name: "Capture card", note: "HDMI in, passthrough out" },
+  { icon: "monitor", name: "OBS on PC", note: "Scenes, overlays, mic" },
+  { icon: "bolt", name: "RTX 5060 Ti", note: "NVENC does the encode" },
+  { icon: "kick", name: "Kick", note: "Live to the squad" },
+];
+const featured = gear.items.filter((g) => g.featured);
+const rest = gear.items.filter((g) => !g.featured);
+---
+
+<BaseLayout title="My GTA 6 Streaming Setup" description="The exact setup behind tuuslice's GTA 6 streams: Xbox Series S, capture card, OBS and NVENC on an RTX 5060 Ti, streaming to Kick.">
+  <PageHead
+    eyebrow="Streaming setup"
+    title="The gear behind"
+    accent="the stream"
+    lead="Kick isn't a built-in Xbox broadcast target, so the console feeds a capture card and the PC does the streaming. Here's the whole chain and everything in it."
+  />
+
+  <section class="wrap">
+    <ol class="chain" data-reveal-group>
+      {
+        chain.map((step, i) => (
+          <li class="chain__step glow-card">
+            <span class="chain__num mono">0{i + 1}</span>
+            <span class="chain__icon">
+              <Icon name={step.icon} size={24} />
+            </span>
+            <span class="chain__name display">{step.name}</span>
+            <span class="chain__note">{step.note}</span>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="chain__guide" data-reveal>
+      <a class="link-arrow" href="/guides/stream-gta-6-xbox-series-s-to-kick/">Read the full setup guide <Icon name="arrow" size={16} /></a>
+    </p>
+  </section>
+
+  <section class="wrap section">
+    <p class="notice" data-reveal>
+      <Icon name="info" />
+      <span>
+        Some links below are affiliate links. If you buy through them the channel earns a small commission at no extra cost to you. I only list
+        gear I'd actually use. <a href="/disclosure/">Full disclosure</a>.
+      </span>
+    </p>
+  </section>
+
+  <section class="wrap section" style="padding-top: 0">
+    <SectionHead eyebrow="Core kit" title="What I" accent="use" />
+    <div class="grid grid--3" data-reveal-group>
+      {featured.map((item) => <GearCard item={item} />)}
+    </div>
+  </section>
+
+  {
+    rest.length > 0 && (
+      <section class="wrap section">
+        <SectionHead eyebrow="Nice to have" title="Upgrades" accent="worth it" />
+        <div class="grid grid--3" data-reveal-group>
+          {rest.map((item) => (
+            <GearCard item={item} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .chain {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    counter-reset: step;
+  }
+  .chain__step {
+    position: relative;
+    display: grid;
+    gap: 0.4rem;
+    justify-items: start;
+    padding: 1.3rem 1.2rem;
+  }
+  .chain__step:not(:last-child)::marker { content: none; }
+  .chain__num { font-size: 0.7rem; color: var(--text-faint); letter-spacing: 0.12em; }
+  .chain__icon {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: var(--grad-sunset);
+    color: #fff;
+    box-shadow: 0 10px 26px -10px var(--glow-pink);
+  }
+  .chain__step:last-child .chain__icon { background: linear-gradient(120deg, #53fc18, #2bd96b); color: #06120a; box-shadow: 0 10px 26px -10px rgba(83, 252, 24, 0.6); }
+  .chain__name { font-size: 1.3rem; margin-top: 0.4rem; }
+  .chain__note { font-size: 0.88rem; color: var(--text-dim); }
+  .chain__guide { margin-top: 1rem; }
+  @media (max-width: 1000px) {
+    .chain { grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); }
+  }
+</style>

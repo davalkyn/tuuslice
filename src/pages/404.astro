@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+---
+
+<BaseLayout title="Lost in Leonida" description="This page doesn't exist." noindex>
+  <section class="lost wrap">
+    <p class="eyebrow">Error 404</p>
+    <h1 class="lost__code display">404</h1>
+    <h2 class="h2">Wrong <span class="grad-text">turn</span></h2>
+    <p class="lead">This page took a wrong exit off the highway. Head back to the hub or check the latest news.</p>
+    <div class="btn-row">
+      <a class="btn btn--lg" href="/" data-magnetic><Icon name="arrow-left" /> Back to the hub</a>
+      <a class="btn btn--ghost btn--lg" href="/news/">Latest news</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lost {
+    min-height: 80vh;
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: 1rem;
+    padding-top: var(--nav-h);
+  }
+  .lost__code {
+    font-size: clamp(7rem, 28vw, 16rem);
+    line-height: 0.8;
+    background: var(--grad-sunset);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 40px rgba(255, 45, 135, 0.45));
+  }
+</style>

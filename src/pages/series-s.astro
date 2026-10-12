@@ -1,0 +1,129 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import JoinCTA from "../components/JoinCTA.astro";
+import PageHead from "../components/PageHead.astro";
+import StatusPill from "../components/StatusPill.astro";
+import data from "../data/series-s.json";
+import { formatDate, settings } from "../lib/site";
+
+type Status = "verified" | "rumor" | "unconfirmed" | "tested";
+const updated = formatDate(new Date(`${data.updated}T00:00:00Z`));
+---
+
+<BaseLayout
+  title="GTA 6 on Xbox Series S: Performance Tracker"
+  description="GTA 6 Series S performance tracker: resolution, frame rate, install size and load times versus PS5 and Series X, each labeled rumor, verified or tested."
+>
+  <PageHead eyebrow="Series S tracker" title="GTA 6 on" accent="Series S" lead={data.intro}>
+    <p class="faint mono updated">Last updated {updated}</p>
+  </PageHead>
+
+  <section class="wrap section" style="padding-top: 0">
+    <div class="table-wrap glow-card glow-card--static" data-reveal>
+      <table class="perf">
+        <thead>
+          <tr>
+            <th scope="col">Metric</th>
+            <th scope="col">PS5</th>
+            <th scope="col">Series X</th>
+            <th scope="col" class="perf__s">Series S</th>
+            <th scope="col">Status</th>
+            <th scope="col">Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            data.rows.map((row) => (
+              <tr>
+                <th scope="row">{row.metric}</th>
+                <td data-label="PS5">{row.ps5}</td>
+                <td data-label="Series X">{row.seriesX}</td>
+                <td data-label="Series S" class="perf__s">{row.seriesS}</td>
+                <td data-label="Status">
+                  <StatusPill status={row.status as Status} />
+                </td>
+                <td data-label="Source" class="perf__src">{row.source}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid grid--3 facts" data-reveal-group>
+      <div class="fact glow-card">
+        <Icon name="eye" size={24} />
+        <h2 class="h3">Plan for 30 fps</h2>
+        <p class="muted">Rockstar hasn't published performance targets. Until it's tested, assume 30 fps and a lower resolution on Series S.</p>
+      </div>
+      <div class="fact glow-card">
+        <Icon name="bolt" size={24} />
+        <h2 class="h3">Check your storage</h2>
+        <p class="muted">The Series S has the smallest drive of the current consoles. Clear space or add an expansion card before pre-load day.</p>
+        <a class="link-arrow" href="/tips/series-s-storage-before-launch/">Storage tip <Icon name="arrow" size={16} /></a>
+      </div>
+      <div class="fact glow-card">
+        <Icon name="monitor" size={24} />
+        <h2 class="h3">Tested live</h2>
+        <p class="muted">On launch day we test GTA 6 on a Series S live on Kick and update every row here within 48 hours.</p>
+        <a class="link-arrow" href={settings.socials.kick} target="_blank" rel="noopener noreferrer">Follow on Kick <Icon name="arrow" size={16} /></a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap section"><JoinCTA /></div>
+</BaseLayout>
+
+<style>
+  .updated { font-size: 0.78rem; letter-spacing: 0.08em; }
+  .table-wrap { overflow-x: auto; padding: 0.5rem; }
+  .perf { width: 100%; border-collapse: collapse; font-size: 0.95rem; min-width: 760px; }
+  .perf th, .perf td { padding: 1rem 1.1rem; text-align: left; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .perf thead th {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sun);
+  }
+  .perf tbody th {
+    font-family: var(--font-body);
+    text-transform: none;
+    font-weight: 600;
+    font-size: 0.98rem;
+    letter-spacing: 0;
+    color: var(--text);
+  }
+  .perf td { color: var(--text-dim); }
+  .perf tbody tr { transition: background 0.3s; }
+  .perf tbody tr:hover { background: rgba(34, 228, 217, 0.05); }
+  .perf tbody tr:last-child th, .perf tbody tr:last-child td { border-bottom: 0; }
+  .perf .perf__s { color: var(--teal); font-weight: 600; }
+  .perf thead .perf__s { color: var(--teal); }
+  .perf__src { font-size: 0.85rem; }
+  .facts { margin-top: clamp(1.5rem, 4vw, 2.5rem); }
+  .fact { padding: 1.5rem; display: grid; gap: 0.7rem; align-content: start; }
+  .fact > :global(svg) { color: var(--teal); }
+
+  @media (max-width: 760px) {
+    .perf { min-width: 0; }
+    .perf thead { display: none; }
+    .perf, .perf tbody, .perf tr, .perf th, .perf td { display: block; }
+    .perf tr { padding: 0.8rem 0.6rem; border-bottom: 1px solid var(--border); }
+    .perf tbody tr:last-child { border-bottom: 0; }
+    .perf th, .perf td { border: 0; padding: 0.3rem 0.4rem; }
+    .perf tbody th { font-family: var(--font-display); text-transform: uppercase; font-weight: 400; font-size: 1.25rem; }
+    .perf td { display: flex; justify-content: space-between; gap: 1rem; text-align: right; }
+    .perf td::before {
+      content: attr(data-label);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      text-align: left;
+    }
+  }
+</style>

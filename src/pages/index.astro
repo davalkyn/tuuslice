@@ -1,0 +1,268 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import Icon from "../components/Icon.astro";
+import JoinCTA from "../components/JoinCTA.astro";
+import KickPlayer from "../components/KickPlayer.astro";
+import LiveBadge from "../components/LiveBadge.astro";
+import PostCard from "../components/PostCard.astro";
+import Schedule from "../components/Schedule.astro";
+import SectionHead from "../components/SectionHead.astro";
+import StatusPill from "../components/StatusPill.astro";
+import VideoCard from "../components/VideoCard.astro";
+import seriesS from "../data/series-s.json";
+import { getAllPosts, getPosts, getVideos } from "../lib/content";
+import { SOCIALS } from "../lib/site";
+
+const news = (await getPosts("news")).slice(0, 3);
+const howTo = await getAllPosts(["guides", "tips"]);
+const guides = [...howTo.filter((p) => p.data.featured), ...howTo.filter((p) => !p.data.featured)].slice(0, 3);
+const blog = (await getPosts("blog")).slice(0, 1);
+const videos = (await getVideos()).slice(0, 3);
+const trackerRows = seriesS.rows.slice(0, 3);
+const contentLinks = SOCIALS.filter((s) => ["youtube", "tiktok", "kick"].includes(s.key));
+---
+
+<BaseLayout bodyClass="home">
+  <Hero />
+
+  <section class="section wrap live-strip" id="home-start">
+    <div class="live-strip__player" data-reveal>
+      <KickPlayer />
+    </div>
+    <div class="live-strip__info" data-reveal style="--reveal-delay: 120ms">
+      <p class="eyebrow">Live on Kick</p>
+      <h2 class="h2">Streaming the road to <span class="grad-text">Leonida</span></h2>
+      <p class="lead">
+        News reactions, Series S setup tests and launch-week marathons. Follow on Kick so you get pinged the second the stream goes live.
+      </p>
+      <p class="live-strip__now" data-live-show hidden>
+        <span class="pill pill--pink"><span class="pill__dot"></span>On air</span> <span data-live-title></span>
+      </p>
+      <Schedule />
+      <div class="btn-row">
+        <LiveBadge size="lg" />
+        <a class="btn btn--ghost btn--lg" href="/live/">Live page <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <SectionHead eyebrow="News desk" title="Latest" accent="intel" lead="Every story summarized and labeled: verified or rumor. Links go to the original source." href="/news/" linkLabel="All news" />
+    <div class="grid grid--3" data-reveal-group>
+      {news.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <SectionHead eyebrow="Guides & Tips" title="Play it" accent="smarter" lead="Setup guides, settings and quick tips for console players." href="/guides/" linkLabel="All guides" />
+    <div class="grid grid--3" data-reveal-group>
+      {guides.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="tracker glow-card glow-card--static" data-reveal>
+      <div class="tracker__text">
+        <p class="eyebrow">Series S tracker</p>
+        <h2 class="h2">Will it run on <span class="grad-text--ocean">Series S?</span></h2>
+        <p class="lead">
+          Resolution, frame rate, install size and load times, tracked row by row and labeled until we test it ourselves on launch day.
+        </p>
+        <a class="btn btn--lg" href="/series-s/" data-magnetic>Open the tracker <Icon name="chart" /></a>
+      </div>
+      <div class="tracker__table" role="table" aria-label="Series S performance preview">
+        <div class="tracker__row tracker__row--head" role="row">
+          <span role="columnheader">Metric</span><span role="columnheader">PS5 / XSX</span><span role="columnheader">Series S</span><span role="columnheader">Status</span>
+        </div>
+        {
+          trackerRows.map((row) => (
+            <div class="tracker__row" role="row">
+              <span role="cell" class="tracker__metric">{row.metric}</span>
+              <span role="cell">{row.seriesX}</span>
+              <span role="cell" class="tracker__s">{row.seriesS}</span>
+              <span role="cell">
+                <StatusPill status={row.status as "verified" | "rumor" | "unconfirmed" | "tested"} />
+              </span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <SectionHead eyebrow="Watch" title="Clips &" accent="videos" lead="Highlights, shorts and full guides on YouTube, TikTok and Kick." href="/videos/" linkLabel="All videos" />
+    {
+      videos.length ? (
+        <div class="grid grid--3" data-reveal-group>
+          {videos.map((v) => (
+            <VideoCard video={v} />
+          ))}
+        </div>
+      ) : (
+        <div class="grid grid--3" data-reveal-group>
+          {contentLinks.map((s) => (
+            <a class="channel glow-card" href={s.href} target="_blank" rel="noopener noreferrer">
+              <span class={`channel__icon channel__icon--${s.key}`}>
+                <Icon name={s.key} size={26} />
+              </span>
+              <span class="channel__name display">{s.label}</span>
+              <span class="channel__handle mono">{s.handle}</span>
+              <span class="link-arrow">
+                Subscribe <Icon name="arrow" size={16} />
+              </span>
+            </a>
+          ))}
+        </div>
+      )
+    }
+  </section>
+
+  <div class="section wrap">
+    <JoinCTA />
+  </div>
+
+  <section class="section wrap">
+    <div class="duo" data-reveal-group>
+      <a class="duo__card glow-card" href="/setup/">
+        <span class="duo__icon"><Icon name="monitor" size={26} /></span>
+        <p class="eyebrow">Streaming setup</p>
+        <h2 class="h3">The gear behind the stream</h2>
+        <p class="muted">Series S, capture card, OBS and the RTX 5060 Ti that does the encoding. Everything I use, with links.</p>
+        <span class="link-arrow">See the setup <Icon name="arrow" size={16} /></span>
+      </a>
+      <a class="duo__card glow-card" href="/support/">
+        <span class="duo__icon"><Icon name="gift" size={26} /></span>
+        <p class="eyebrow">Support the channel</p>
+        <h2 class="h3">Keep the streams going</h2>
+        <p class="muted">Sub on Kick, tip via PayPal or Solana, or sponsor a stream. Every bit goes back into better content.</p>
+        <span class="link-arrow">Ways to support <Icon name="arrow" size={16} /></span>
+      </a>
+      {
+        blog[0] && (
+          <a class="duo__card glow-card" href={`/blog/${blog[0].id}/`}>
+            <span class="duo__icon"><Icon name="spark" size={26} /></span>
+            <p class="eyebrow">From the blog</p>
+            <h2 class="h3">{blog[0].data.title}</h2>
+            <p class="muted">{blog[0].data.description}</p>
+            <span class="link-arrow">Read it <Icon name="arrow" size={16} /></span>
+          </a>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .live-strip {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+  .live-strip__info { display: grid; gap: 1.1rem; }
+  .live-strip__now { display: flex; align-items: center; gap: 0.6rem; color: var(--text); }
+
+  .tracker {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    background:
+      radial-gradient(70% 90% at 100% 100%, rgba(34, 228, 217, 0.14), transparent 60%),
+      radial-gradient(60% 80% at 0% 0%, rgba(123, 92, 255, 0.16), transparent 60%),
+      var(--panel);
+  }
+  .tracker__text { display: grid; gap: 1rem; justify-items: start; }
+  .tracker__table {
+    display: grid;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    background: rgba(10, 6, 18, 0.55);
+  }
+  .tracker__row {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr auto;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.92rem;
+    color: var(--text-dim);
+    transition: background 0.3s;
+  }
+  .tracker__row:last-child { border-bottom: 0; }
+  .tracker__row:not(.tracker__row--head):hover { background: rgba(34, 228, 217, 0.06); }
+  .tracker__row--head {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sun);
+  }
+  .tracker__metric { color: var(--text); font-weight: 500; }
+  .tracker__s { color: var(--teal); font-weight: 600; }
+
+  .channel {
+    display: grid;
+    gap: 0.5rem;
+    justify-items: start;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+  }
+  .channel__icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: rgba(255, 45, 135, 0.14);
+    color: var(--pink-hot);
+    transition: all 0.4s var(--ease);
+  }
+  .channel__icon--kick { background: rgba(83, 252, 24, 0.12); color: var(--kick); }
+  .channel__icon--tiktok { background: rgba(34, 228, 217, 0.12); color: var(--teal); }
+  .channel:hover .channel__icon { transform: rotate(-8deg) scale(1.08); box-shadow: 0 0 30px currentColor; }
+  .channel__name { font-size: 1.8rem; margin-top: 0.5rem; }
+  .channel__handle { font-size: 0.8rem; color: var(--text-faint); }
+
+  .duo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: clamp(1rem, 2.4vw, 1.5rem);
+  }
+  .duo__card {
+    display: grid;
+    gap: 0.7rem;
+    align-content: start;
+    padding: clamp(1.4rem, 3vw, 2rem);
+    text-decoration: none;
+    color: inherit;
+  }
+  .duo__icon {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    background: var(--grad-sunset);
+    color: #fff;
+    box-shadow: 0 10px 30px -10px var(--glow-pink);
+    margin-bottom: 0.4rem;
+    transition: transform 0.5s var(--ease-spring);
+  }
+  .duo__card:hover .duo__icon { transform: rotate(-8deg) scale(1.08); }
+  .duo__card .link-arrow { margin-top: 0.4rem; }
+
+  @media (max-width: 920px) {
+    .live-strip, .tracker { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .tracker__row { grid-template-columns: 1fr auto auto; }
+    .tracker__row > :nth-child(2) { display: none; }
+  }
+</style>

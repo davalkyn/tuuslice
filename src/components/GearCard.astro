@@ -1,0 +1,47 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  item: { id: string; name: string; category: string; why: string; url: string };
+  compact?: boolean;
+}
+const { item, compact = false } = Astro.props;
+---
+
+<article class:list={["gear glow-card", { "gear--compact": compact }]}>
+  <div class="gear__top">
+    <span class="pill pill--sun">{item.category}</span>
+  </div>
+  <h3 class="gear__name">{item.name}</h3>
+  <p class="gear__why">{item.why}</p>
+  {
+    item.url ? (
+      <a class="btn btn--sm gear__cta" href={item.url} target="_blank" rel="sponsored nofollow noopener noreferrer">
+        Check price <Icon name="external" size={16} />
+      </a>
+    ) : (
+      <span class="gear__soon mono">Link coming soon</span>
+    )
+  }
+</article>
+
+<style>
+  .gear {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 1.35rem;
+  }
+  .gear__name { font-size: 1.35rem; line-height: 1.1; }
+  .gear__why { color: var(--text-dim); font-size: 0.94rem; line-height: 1.6; }
+  .gear__cta { margin-top: auto; align-self: flex-start; }
+  .gear__soon {
+    margin-top: auto;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .gear--compact { padding: 1.1rem; }
+  .gear--compact .gear__name { font-size: 1.15rem; }
+</style>

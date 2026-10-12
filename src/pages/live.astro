@@ -1,0 +1,58 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import JoinCTA from "../components/JoinCTA.astro";
+import KickPlayer from "../components/KickPlayer.astro";
+import LiveBadge from "../components/LiveBadge.astro";
+import PageHead from "../components/PageHead.astro";
+import Schedule from "../components/Schedule.astro";
+import { kickChatUrl, settings } from "../lib/site";
+---
+
+<BaseLayout title="Live on Kick" description="Watch tuuslice live on Kick: GTA 6 news reactions, Series S tests and launch-week streams, with the schedule in your time zone.">
+  <PageHead eyebrow="Live on Kick" title="Watch" accent="live" lead="GTA 6 streams on Kick. Follow the channel to get notified the moment we go live." >
+    <div class="btn-row">
+      <LiveBadge size="lg" />
+      <a class="btn btn--ghost btn--lg" href={kickChatUrl} target="_blank" rel="noopener noreferrer">Open chat <Icon name="external" /></a>
+    </div>
+  </PageHead>
+
+  <section class="wrap live-grid">
+    <div data-reveal>
+      <KickPlayer eager />
+      <p class="faint live-note">
+        Player not loading? <a href={settings.socials.kick} target="_blank" rel="noopener noreferrer">Watch on kick.com</a>. Chat lives on Kick
+        too, so open it in a second tab.
+      </p>
+    </div>
+    <aside class="live-side" data-reveal style="--reveal-delay: 120ms">
+      <h2 class="h3">Stream schedule</h2>
+      <Schedule />
+      <div class="sub-card glow-card">
+        <p class="eyebrow">Subscribe on Kick</p>
+        <p class="muted">
+          Subs and tips are what keep the streams running. Subscribers get a Discord role and first dibs on co-op LFG sessions.
+        </p>
+        <a class="btn btn--kick" href={settings.socials.kick} target="_blank" rel="noopener noreferrer"><Icon name="kick" /> Subscribe</a>
+      </div>
+    </aside>
+  </section>
+
+  <div class="wrap section"><JoinCTA title="Stream" accent="squad" /></div>
+</BaseLayout>
+
+<style>
+  .live-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    align-items: start;
+  }
+  .live-note { margin-top: 0.8rem; font-size: 0.85rem; }
+  .live-note a { color: var(--text-dim); }
+  .live-side { display: grid; gap: 1.2rem; }
+  .sub-card { padding: 1.4rem; display: grid; gap: 0.8rem; justify-items: start; }
+  @media (max-width: 980px) {
+    .live-grid { grid-template-columns: 1fr; }
+  }
+</style>

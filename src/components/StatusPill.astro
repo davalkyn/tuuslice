@@ -1,0 +1,9 @@
+---
+interface Props {
+  status: "verified" | "rumor" | "unconfirmed" | "tested";
+}
+const { status } = Astro.props;
+const labels = { verified: "Verified", rumor: "Rumor", unconfirmed: "Unconfirmed", tested: "Tested" };
+---
+
+<span class={`pill pill--${status}`}><span class="pill__dot"></span>{labels[status]}</span>

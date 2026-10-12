@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHead from "../components/PageHead.astro";
+import { settings } from "../lib/site";
+---
+
+<BaseLayout title="Disclosure" description="How tuuslice handles affiliate links, sponsorships, news sourcing and its relationship to Rockstar Games.">
+  <PageHead eyebrow="The fine print" title="Disclosure" lead="Short version: fan-made, honest about money, and every news story links back to its source." />
+  <section class="wrap wrap--narrow">
+    <div class="prose" data-reveal>
+      <h2>Not affiliated with Rockstar</h2>
+      <p>
+        tuuslice is a fan-made community site. It is not affiliated with, endorsed by or sponsored by Rockstar Games or Take-Two Interactive.
+        Grand Theft Auto, GTA and related names are trademarks of Take-Two Interactive. All artwork on this site is original; no Rockstar logos
+        or art are used.
+      </p>
+
+      <h2>Affiliate links</h2>
+      <p>
+        Some links on this site, mainly on the <a href="/setup/">setup page</a> and in guides, are affiliate links. If you buy something through
+        one, the channel may earn a small commission at no extra cost to you. Affiliate links are marked as sponsored links in the page code and
+        never change what I recommend.
+      </p>
+
+      <h2>Sponsorships</h2>
+      <p>Sponsored streams, guides or posts are always labeled as sponsored, on stream and on the page.</p>
+
+      <h2>How news works here</h2>
+      <p>
+        News posts are short summaries written in my own words. Each one is labeled <strong>verified</strong>, <strong>rumor</strong> or
+        <strong>unconfirmed</strong> and links to the original reporting. If a story changes, the post is updated and marked with an updated
+        date.
+      </p>
+
+      <h2>Privacy</h2>
+      <p>
+        This site doesn't use accounts or tracking cookies of its own. Embedded players (Kick, YouTube, TikTok) only load when you choose to play
+        them, except on the <a href="/live/">live page</a>, which loads the Kick player straight away. Those services have their own privacy
+        policies.
+      </p>
+
+      <h2>Contact</h2>
+      <p>Questions or corrections: <a href={`mailto:${settings.businessEmail}`}>{settings.businessEmail}</a>.</p>
+    </div>
+  </section>
+</BaseLayout>

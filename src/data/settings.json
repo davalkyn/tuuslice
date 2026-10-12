@@ -1,0 +1,30 @@
+{
+  "brand": "tuuslice",
+  "tagline": "GTA 6 news, guides and live streams. Fan-made, built for the Leonida grind.",
+  "launchDate": "2026-11-19",
+  "kickSlug": "tuuslice",
+  "socials": {
+    "kick": "https://kick.com/tuuslice",
+    "discord": "https://discord.com/invite/Kc2XUz2Rn",
+    "telegram": "https://t.me/+6RiYfefXQ8Y1MjI0",
+    "youtube": "https://www.youtube.com/@tuuslice",
+    "tiktok": "https://www.tiktok.com/@tuuslice",
+    "x": "https://x.com/tuuslice",
+    "github": "https://github.com/davalkyn"
+  },
+  "support": {
+    "paypal": "https://paypal.me/tuuslice",
+    "solana": "GH4duFJgmetcyuFtt5yfdxyeYaR7uqvsak3WuJ5w9We9"
+  },
+  "businessEmail": "emailantonio@trustrade.co.za",
+  "stats": {
+    "discordMembers": 0,
+    "telegramMembers": 0,
+    "kickFollowers": 0,
+    "youtubeSubscribers": 0,
+    "monthlyVisitors": 0
+  },
+  "discordServerId": "",
+  "adsenseClientId": "",
+  "cfAnalyticsToken": ""
+}

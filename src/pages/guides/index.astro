@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EmptyState from "../../components/EmptyState.astro";
+import PageHead from "../../components/PageHead.astro";
+import PostCard from "../../components/PostCard.astro";
+import { getAllPosts } from "../../lib/content";
+
+const posts = await getAllPosts(["guides", "tips"]);
+const counts = {
+  all: posts.length,
+  guides: posts.filter((p) => p.collection === "guides").length,
+  tips: posts.filter((p) => p.collection === "tips").length,
+};
+---
+
+<BaseLayout title="GTA 6 Guides, Tips & Tricks" description="GTA 6 guides, tips and tricks: setup, settings, money, missions and Series S survival, written for console players.">
+  <PageHead
+    eyebrow="Guides & Tips"
+    title="Play it"
+    accent="smarter"
+    lead="Step-by-step guides and quick tips and tricks for GTA 6 on console, from stream setup to Series S settings. New ones land every week."
+  >
+    <div class="chip-row" data-filter-group="#guide-grid" data-filter-empty="#guide-empty" role="group" aria-label="Filter">
+      <button class="chip" type="button" data-filter="all" aria-pressed="true">All · {counts.all}</button>
+      <button class="chip" type="button" data-filter="guides" aria-pressed="false">Guides · {counts.guides}</button>
+      <button class="chip" type="button" data-filter="tips" aria-pressed="false">Tips &amp; Tricks · {counts.tips}</button>
+    </div>
+  </PageHead>
+
+  <section class="wrap section" style="padding-top: 0">
+    {
+      posts.length ? (
+        <div class="grid grid--3" id="guide-grid" data-reveal-group>
+          {posts.map((post) => (
+            <PostCard post={post} morph headingLevel="h2" />
+          ))}
+        </div>
+      ) : null
+    }
+    <div id="guide-empty" hidden={posts.length > 0}>
+      <EmptyState title="Nothing here yet" text="Guides and tips drop as soon as they're written." />
+    </div>
+  </section>
+</BaseLayout>

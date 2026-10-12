@@ -1,0 +1,289 @@
+# Sveltia CMS configuration for tuuslice.
+# Every field here must match src/content.config.ts.
+# Sign in at /admin with "Sign In with Token" (a fine-grained GitHub token with
+# Contents: read & write on davalkyn/tuuslice). Publishing commits to master,
+# and Cloudflare rebuilds the site automatically.
+
+backend:
+  name: github
+  repo: davalkyn/tuuslice
+  branch: master
+  commit_messages:
+    create: "Add {{collection}}: {{slug}}"
+    update: "Update {{collection}}: {{slug}}"
+    delete: "Delete {{collection}}: {{slug}}"
+    uploadMedia: "Upload {{path}}"
+    deleteMedia: "Delete {{path}}"
+
+site_url: https://tuuslice.workers.dev
+display_url: https://tuuslice.workers.dev
+logo:
+  src: /favicon.svg
+
+media_folder: public/uploads
+public_folder: /uploads
+
+output:
+  omit_empty_optional_fields: true
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+collections:
+  # -------------------------------------------------------------------------
+  - name: news
+    label: News
+    label_singular: News post
+    description: "Short summaries in your own words. Always add the source link and label it verified or rumor."
+    folder: src/content/news
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    preview_path: "news/{{slug}}/"
+    summary: "{{title}} · {{pubDate}}"
+    sortable_fields: [pubDate, title]
+    # Shared fields are defined here once (&anchor) and reused below (*alias).
+    fields:
+      - &title { label: Title, name: title, widget: string, hint: "Clear and searchable, e.g. 'GTA 6 on Series S: what we know'." }
+      - &description
+        label: Summary
+        name: description
+        widget: text
+        hint: "One or two sentences (about 160 characters). Shown on cards, in Google results and in Discord/Telegram link previews."
+      - &pubDate { label: Publish date, name: pubDate, widget: datetime, type: date, default: "{{now}}" }
+      - label: Status
+        name: status
+        widget: select
+        default: unconfirmed
+        options:
+          - { label: "Verified (official or primary source)", value: verified }
+          - { label: "Rumor (reported, not confirmed)", value: rumor }
+          - { label: "Unconfirmed (waiting on details)", value: unconfirmed }
+      - label: Sources
+        name: sources
+        widget: list
+        required: false
+        summary: "{{fields.name}}"
+        hint: "Where the story came from. Link out instead of copying the article."
+        fields:
+          - { label: Outlet and headline, name: name, widget: string }
+          - { label: Link, name: url, widget: string, required: false }
+      - &body { label: Body, name: body, widget: markdown }
+      - &cover { label: Cover image, name: cover, widget: image, required: false, hint: "Optional, 16:9 works best. Use your own screenshots or art, not Rockstar's. Leave empty for the neon sunset cover." }
+      - &coverAlt { label: Cover description (alt text), name: coverAlt, widget: string, required: false }
+      - &tags { label: Tags, name: tags, widget: list, required: false, hint: "Comma separated, e.g. series s, money, missions" }
+      - &updatedDate { label: Updated date, name: updatedDate, widget: datetime, type: date, required: false, hint: "Set this when you update a post with new info." }
+      - &draft { label: Draft (hide from the site), name: draft, widget: boolean, default: false, required: false }
+      - &featured { label: Featured, name: featured, widget: boolean, default: false, required: false, hint: "Featured guides and tips show first on the home page." }
+
+  # -------------------------------------------------------------------------
+  - name: guides
+    label: Guides
+    label_singular: Guide
+    description: "Step-by-step guides. Add gear to show an affiliate box."
+    folder: src/content/guides
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    preview_path: "guides/{{slug}}/"
+    summary: "{{title}} · {{pubDate}}"
+    sortable_fields: [pubDate, title]
+    fields:
+      - *title
+      - *description
+      - *pubDate
+      - &platforms
+        label: Platforms
+        name: platforms
+        widget: select
+        multiple: true
+        required: false
+        options:
+          - { label: PS5, value: ps5 }
+          - { label: Xbox Series X, value: xbox-series-x }
+          - { label: Xbox Series S, value: xbox-series-s }
+          - { label: PC, value: pc }
+      - *body
+      - &gear
+        label: Gear used (affiliate box)
+        name: gear
+        widget: relation
+        collection: data
+        file: gear
+        search_fields: ["items.*.name"]
+        display_fields: ["items.*.name"]
+        value_field: "items.*.id"
+        multiple: true
+        required: false
+        hint: "Adds a 'Gear for this guide' box with your affiliate links. Manage items under Site data → Gear."
+      - *cover
+      - *coverAlt
+      - *tags
+      - *featured
+      - *updatedDate
+      - *draft
+
+  # -------------------------------------------------------------------------
+  - name: tips
+    label: Tips & Tricks
+    label_singular: Tip
+    description: "Quick wins players can use in five minutes or less."
+    folder: src/content/tips
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    preview_path: "tips/{{slug}}/"
+    summary: "{{title}} · {{pubDate}}"
+    sortable_fields: [pubDate, title]
+    fields: [*title, *description, *pubDate, *platforms, *body, *gear, *cover, *coverAlt, *tags, *featured, *updatedDate, *draft]
+
+  # -------------------------------------------------------------------------
+  - name: blog
+    label: Blog
+    label_singular: Blog post
+    description: "Updates, stream plans and personal posts."
+    folder: src/content/blog
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    preview_path: "blog/{{slug}}/"
+    summary: "{{title}} · {{pubDate}}"
+    sortable_fields: [pubDate, title]
+    fields: [*title, *description, *pubDate, *body, *cover, *coverAlt, *tags, *featured, *updatedDate, *draft]
+
+  # -------------------------------------------------------------------------
+  - name: videos
+    label: Videos & Clips
+    label_singular: Video
+    description: "Paste a YouTube, TikTok or Kick link. YouTube and TikTok play right on the site."
+    folder: src/content/videos
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    summary: "{{title}} · {{platform}}"
+    sortable_fields: [pubDate, title]
+    fields:
+      - { label: Title, name: title, widget: string }
+      - label: Platform
+        name: platform
+        widget: select
+        default: youtube
+        options:
+          - { label: YouTube, value: youtube }
+          - { label: TikTok, value: tiktok }
+          - { label: Kick, value: kick }
+      - { label: Link, name: url, widget: string, hint: "e.g. https://www.youtube.com/watch?v=… or https://www.tiktok.com/@tuuslice/video/…" }
+      - { label: Date, name: pubDate, widget: datetime, type: date, default: "{{now}}" }
+      - { label: Featured, name: featured, widget: boolean, default: false, required: false }
+      - { label: Draft (hide from the site), name: draft, widget: boolean, default: false, required: false }
+
+  # -------------------------------------------------------------------------
+  - name: data
+    label: Site data
+    description: "Links, schedule, gear and the Series S tracker."
+    files:
+      - name: settings
+        label: Settings & links
+        file: src/data/settings.json
+        fields:
+          - { label: Brand name, name: brand, widget: string }
+          - { label: Tagline, name: tagline, widget: text }
+          - { label: GTA 6 launch date, name: launchDate, widget: datetime, type: date, hint: "The countdown runs to midnight on this date in each visitor's time zone." }
+          - { label: Kick channel name, name: kickSlug, widget: string }
+          - label: Social links
+            name: socials
+            widget: object
+            fields:
+              - { label: Kick, name: kick, widget: string }
+              - { label: Discord invite, name: discord, widget: string, hint: "Use a non-expiring invite link." }
+              - { label: Telegram, name: telegram, widget: string }
+              - { label: YouTube, name: youtube, widget: string }
+              - { label: TikTok, name: tiktok, widget: string }
+              - { label: X, name: x, widget: string }
+              - { label: GitHub, name: github, widget: string }
+          - label: Support
+            name: support
+            widget: object
+            fields:
+              - { label: PayPal link, name: paypal, widget: string }
+              - { label: Solana address, name: solana, widget: string }
+          - { label: Business email, name: businessEmail, widget: string }
+          - label: Audience numbers (shown to sponsors when above 0)
+            name: stats
+            widget: object
+            fields:
+              - { label: Discord members, name: discordMembers, widget: number, value_type: int, min: 0, default: 0 }
+              - { label: Telegram subscribers, name: telegramMembers, widget: number, value_type: int, min: 0, default: 0 }
+              - { label: Kick followers, name: kickFollowers, widget: number, value_type: int, min: 0, default: 0 }
+              - { label: YouTube subscribers, name: youtubeSubscribers, widget: number, value_type: int, min: 0, default: 0 }
+              - { label: Monthly site visitors, name: monthlyVisitors, widget: number, value_type: int, min: 0, default: 0 }
+          - { label: Discord server ID (optional), name: discordServerId, widget: string, required: false, hint: "Enable Server Widget in Discord settings, then paste the server ID to show a live widget on the Community page." }
+          - { label: AdSense client ID (optional), name: adsenseClientId, widget: string, required: false, hint: "Only after AdSense approves the site, e.g. ca-pub-1234567890." }
+          - { label: Cloudflare Web Analytics token (optional), name: cfAnalyticsToken, widget: string, required: false }
+
+      - name: schedule
+        label: Stream schedule
+        file: src/data/schedule.json
+        fields:
+          - { label: Your time zone, name: timezone, widget: string, default: Africa/Johannesburg, hint: "IANA name, e.g. Africa/Johannesburg. Visitors see times in their own zone." }
+          - { label: Note, name: note, widget: text }
+          - label: Weekly streams
+            name: slots
+            widget: list
+            summary: "{{fields.day}} {{fields.start}}: {{fields.title}}"
+            fields:
+              - label: Day
+                name: day
+                widget: select
+                options: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]
+              - { label: Start time (24h), name: start, widget: string, pattern: ['^([01]\d|2[0-3]):[0-5]\d$', "Use HH:MM, e.g. 20:00"] }
+              - { label: Length (minutes), name: durationMinutes, widget: number, value_type: int, min: 15, default: 120 }
+              - { label: Title, name: title, widget: string }
+
+      - name: gear
+        label: Gear & affiliate links
+        file: src/data/gear.json
+        fields:
+          - label: Items
+            name: items
+            widget: list
+            summary: "{{fields.name}}"
+            fields:
+              - { label: ID, name: id, widget: string, pattern: ['^[a-z0-9-]+$', "Lowercase letters, numbers and dashes only"], hint: "Short unique id, e.g. capture-card. Don't change it once guides use it." }
+              - { label: Name, name: name, widget: string }
+              - { label: Category, name: category, widget: string }
+              - { label: Why I use it, name: why, widget: text }
+              - { label: Affiliate link, name: url, widget: string, required: false, hint: "Leave empty until you have an affiliate link." }
+              - { label: Core kit (show first), name: featured, widget: boolean, default: false, required: false }
+
+      - name: series-s
+        label: Series S tracker
+        file: src/data/series-s.json
+        fields:
+          - { label: Last updated, name: updated, widget: datetime, type: date }
+          - { label: Intro, name: intro, widget: text }
+          - label: Rows
+            name: rows
+            widget: list
+            summary: "{{fields.metric}}: {{fields.seriesS}} ({{fields.status}})"
+            fields:
+              - { label: Metric, name: metric, widget: string }
+              - { label: PS5, name: ps5, widget: string }
+              - { label: Series X, name: seriesX, widget: string }
+              - { label: Series S, name: seriesS, widget: string }
+              - label: Status
+                name: status
+                widget: select
+                options:
+                  - { label: Rumor, value: rumor }
+                  - { label: Verified, value: verified }
+                  - { label: Unconfirmed, value: unconfirmed }
+                  - { label: Tested on stream, value: tested }
+              - { label: Source, name: source, widget: string }

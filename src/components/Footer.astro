@@ -1,0 +1,136 @@
+---
+import { NAV, SOCIALS, settings } from "../lib/site";
+import Icon from "./Icon.astro";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer__horizon" aria-hidden="true"></div>
+  <div class="wrap footer__grid">
+    <div class="footer__brand">
+      <p class="footer__word">{settings.brand}</p>
+      <p class="muted footer__tag">{settings.tagline}</p>
+      <div class="footer__socials">
+        {
+          SOCIALS.map((s) => (
+            <a href={s.href} target="_blank" rel="noopener noreferrer" class="footer__social" aria-label={s.label}>
+              <Icon name={s.key} size={18} />
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
+    <nav class="footer__col" aria-label="Explore">
+      <p class="footer__head">Explore</p>
+      {NAV.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+
+    <nav class="footer__col" aria-label="More">
+      <p class="footer__head">More</p>
+      <a href="/setup/">Streaming setup</a>
+      <a href="/support/">Support &amp; sponsors</a>
+      <a href="/disclosure/">Disclosure</a>
+      <a href="/rss.xml">RSS feed</a>
+    </nav>
+  </div>
+
+  <div class="wrap footer__legal">
+    <p>
+      Fan-made. Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive. Grand Theft Auto and GTA are
+      trademarks of Take-Two Interactive. Some links are affiliate links; see the <a href="/disclosure/">disclosure</a>.
+    </p>
+    <p class="mono">&copy; {year} {settings.brand}</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    position: relative;
+    z-index: 2;
+    margin-top: clamp(1rem, 3vw, 2rem);
+    padding-top: clamp(3rem, 7vw, 5rem);
+    background: linear-gradient(180deg, transparent, rgba(10, 6, 18, 0.85) 30%);
+  }
+  .footer__horizon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--pink), var(--orange), var(--sun), var(--teal), transparent);
+    box-shadow: 0 0 22px rgba(255, 45, 135, 0.6);
+  }
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    gap: 2.5rem;
+  }
+  .footer__word {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    text-transform: uppercase;
+    line-height: 1;
+    background: var(--grad-sunset);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 18px rgba(255, 45, 135, 0.35));
+  }
+  .footer__tag { margin-top: 0.8rem; max-width: 40ch; font-size: 0.95rem; }
+  .footer__socials { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.4rem; }
+  .footer__social {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--border-strong);
+    color: var(--text-dim);
+    background: rgba(255, 255, 255, 0.03);
+    transition: all 0.35s var(--ease);
+  }
+  .footer__social:hover {
+    color: #fff;
+    border-color: var(--pink-hot);
+    background: rgba(255, 45, 135, 0.15);
+    box-shadow: 0 0 22px rgba(255, 45, 135, 0.45);
+    transform: translateY(-3px);
+  }
+  .footer__col { display: grid; align-content: start; gap: 0.55rem; }
+  .footer__head {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--sun);
+    margin-bottom: 0.35rem;
+  }
+  .footer__col a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.95rem;
+    width: fit-content;
+    transition: color 0.25s, text-shadow 0.25s, transform 0.3s var(--ease);
+  }
+  .footer__col a:hover { color: #fff; text-shadow: 0 0 12px var(--glow-pink); transform: translateX(3px); }
+  .footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    padding-block: 1.75rem 2.25rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--text-faint);
+  }
+  .footer__legal p:first-child { max-width: 80ch; }
+  .footer__legal a { color: var(--text-dim); }
+
+  @media (max-width: 760px) {
+    .footer__grid { grid-template-columns: 1fr 1fr; }
+    .footer__brand { grid-column: 1 / -1; }
+  }
+</style>

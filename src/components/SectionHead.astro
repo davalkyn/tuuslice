@@ -1,0 +1,32 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  accent?: string;
+  lead?: string;
+  href?: string;
+  linkLabel?: string;
+  as?: "h1" | "h2";
+}
+const { eyebrow, title, accent, lead, href, linkLabel = "See all", as: Tag = "h2" } = Astro.props;
+---
+
+<div class="section-head" data-reveal>
+  <div class="section-head__text">
+    <p class="eyebrow">{eyebrow}</p>
+    <Tag class={Tag === "h1" ? "h1" : "h2"}>
+      {title}{accent && <> <span class="grad-text">{accent}</span></>}
+    </Tag>
+    {lead && <p class="lead">{lead}</p>}
+    <slot />
+  </div>
+  {
+    href && (
+      <a class="link-arrow" href={href}>
+        {linkLabel} <Icon name="arrow" size={16} />
+      </a>
+    )
+  }
+</div>

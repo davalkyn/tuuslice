@@ -1,0 +1,25 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  accent?: string;
+  lead?: string;
+}
+const { eyebrow, title, accent, lead } = Astro.props;
+---
+
+<header class="page-head wrap">
+  <div class="page-head__inner">
+    <p class="eyebrow" data-reveal>{eyebrow}</p>
+    <h1 class="h1" data-reveal style="--reveal-delay: 80ms">
+      {title}{accent && <> <span class="grad-text">{accent}</span></>}
+    </h1>
+    {lead && <p class="lead" data-reveal style="--reveal-delay: 160ms">{lead}</p>}
+    <div data-reveal style="--reveal-delay: 220ms"><slot /></div>
+  </div>
+</header>
+
+<style>
+  .page-head__inner { display: grid; gap: 1rem; max-width: 860px; }
+  .page-head__inner :global(.h1) { text-shadow: 0 0 40px rgba(255, 45, 135, 0.25); }
+</style>

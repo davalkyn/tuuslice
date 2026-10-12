@@ -1,0 +1,107 @@
+---
+import { SECTIONS, postUrl, readingMinutes, type Post } from "../lib/content";
+import { formatDate } from "../lib/site";
+import Cover from "./Cover.astro";
+import Icon from "./Icon.astro";
+import StatusPill from "./StatusPill.astro";
+
+interface Props {
+  post: Post;
+  morph?: boolean;
+  headingLevel?: "h2" | "h3";
+}
+const { post, morph = false, headingLevel: H = "h3" } = Astro.props;
+const section = SECTIONS[post.collection];
+const vtName = morph ? `cover-${post.collection}-${post.id}`.replace(/[^a-zA-Z0-9-]/g, "-") : undefined;
+---
+
+<article class="post-card glow-card" data-kind={post.collection}>
+  <a href={postUrl(post)} class="post-card__link">
+    <Cover kind={post.collection} src={post.data.cover} alt={post.data.coverAlt} vtName={vtName} />
+    <div class="post-card__body">
+      <div class="post-card__meta">
+        <span class={`pill pill--${section.tone}`}>{section.single}</span>
+        {post.collection === "news" && "status" in post.data && <StatusPill status={post.data.status} />}
+      </div>
+      <H class="post-card__title">{post.data.title}</H>
+      <p class="post-card__desc">{post.data.description}</p>
+      <p class="post-card__foot mono">
+        <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+        <span aria-hidden="true">·</span>
+        <span>{readingMinutes(post.body)} min read</span>
+        <span class="post-card__go" aria-hidden="true"><Icon name="arrow" size={16} /></span>
+      </p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .post-card { overflow: hidden; }
+  .post-card__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    border-radius: inherit;
+  }
+  .post-card__link:focus-visible { outline-offset: -3px; }
+  .post-card :global(.cover) { border-bottom: 1px solid var(--border); }
+  .post-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 1.2rem 1.3rem 1.25rem;
+    flex: 1;
+  }
+  .post-card__meta { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .post-card__title {
+    font-size: clamp(1.3rem, 2.2vw, 1.55rem);
+    line-height: 1.08;
+    color: var(--text);
+    transition: color 0.3s var(--ease);
+  }
+  .post-card:hover .post-card__title {
+    background: var(--grad-sunset);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .post-card__desc {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .post-card__foot {
+    margin-top: auto;
+    padding-top: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+  }
+  .post-card__go {
+    margin-left: auto;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--border-strong);
+    color: var(--text-dim);
+    transition: all 0.4s var(--ease);
+  }
+  .post-card:hover .post-card__go {
+    color: #fff;
+    border-color: transparent;
+    background: var(--grad-sunset);
+    box-shadow: 0 0 20px var(--glow-pink);
+    transform: rotate(-45deg);
+  }
+</style>

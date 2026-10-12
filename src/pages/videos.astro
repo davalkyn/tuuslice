@@ -1,0 +1,49 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import PageHead from "../components/PageHead.astro";
+import VideoCard from "../components/VideoCard.astro";
+import { getVideos } from "../lib/content";
+import { SOCIALS } from "../lib/site";
+
+const videos = await getVideos();
+const channels = SOCIALS.filter((s) => ["youtube", "tiktok", "kick"].includes(s.key));
+---
+
+<BaseLayout title="Videos & Clips" description="GTA 6 videos, shorts and stream highlights from tuuslice on YouTube, TikTok and Kick.">
+  <PageHead eyebrow="Watch" title="Clips &" accent="videos" lead="Stream highlights, shorts and full guides. Tap a video to play it right here.">
+    <div class="btn-row">
+      {
+        channels.map((c) => (
+          <a class="btn btn--ghost btn--sm" href={c.href} target="_blank" rel="noopener noreferrer">
+            <Icon name={c.key} size={16} /> {c.label}
+          </a>
+        ))
+      }
+    </div>
+  </PageHead>
+
+  <section class="wrap section" style="padding-top: 0">
+    {
+      videos.length ? (
+        <div class="grid grid--3" data-reveal-group>
+          {videos.map((v) => (
+            <VideoCard video={v} />
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state glow-card glow-card--static">
+          <h2 class="h3">First clips drop with the pre-launch streams</h2>
+          <p class="muted">Subscribe on YouTube and follow on TikTok so you don't miss them.</p>
+          <div class="btn-row">
+            {channels.map((c) => (
+              <a class="btn btn--sm" href={c.href} target="_blank" rel="noopener noreferrer">
+                <Icon name={c.key} size={16} /> {c.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      )
+    }
+  </section>
+</BaseLayout>

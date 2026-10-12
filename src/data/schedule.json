@@ -1,0 +1,9 @@
+{
+  "timezone": "Africa/Johannesburg",
+  "note": "Pre-launch: news reactions, setup tests and community hangs. Launch week schedule drops before Nov 19.",
+  "slots": [
+    { "day": "Tuesday", "start": "20:00", "durationMinutes": 120, "title": "GTA 6 news reactions + rumor check" },
+    { "day": "Thursday", "start": "20:00", "durationMinutes": 120, "title": "Series S streaming setup test" },
+    { "day": "Saturday", "start": "21:00", "durationMinutes": 180, "title": "Community night: Q&A and launch hype" }
+  ]
+}

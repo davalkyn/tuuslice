@@ -1,0 +1,92 @@
+---
+import { settings } from "../lib/site";
+
+const launch = new Date(`${settings.launchDate}T00:00:00Z`);
+const launchText = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(launch);
+const units = [
+  { key: "days", label: "Days" },
+  { key: "hours", label: "Hrs" },
+  { key: "minutes", label: "Min" },
+  { key: "seconds", label: "Sec" },
+];
+---
+
+<div class="countdown" data-countdown={settings.launchDate}>
+  <div class="countdown__units" data-countdown-units role="timer" aria-live="off">
+    {
+      units.map((u) => (
+        <div class="countdown__unit">
+          <span class="countdown__num" data-unit={u.key}>--</span>
+          <span class="countdown__label">{u.label}</span>
+        </div>
+      ))
+    }
+  </div>
+  <p class="countdown__caption" data-countdown-caption>
+    until <strong>GTA VI</strong> · <time datetime={settings.launchDate}>{launchText}</time> · PS5 &amp; Xbox Series X|S
+  </p>
+  <p class="countdown__out" data-countdown-out hidden>
+    <strong>GTA VI is out now.</strong> Launch streams are live on Kick: come hang out.
+  </p>
+</div>
+
+<style>
+  .countdown { margin-top: 1.8rem; }
+  .countdown__units {
+    display: flex;
+    gap: clamp(0.45rem, 1.4vw, 0.75rem);
+  }
+  .countdown__unit {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    min-width: clamp(64px, 15vw, 88px);
+    padding: 0.7rem 0.6rem 0.55rem;
+    border-radius: 14px;
+    background: rgba(16, 8, 28, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 10px 30px -18px rgba(255, 45, 135, 0.6);
+    overflow: hidden;
+  }
+  .countdown__unit::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 2px;
+    background: var(--grad-sunset);
+    box-shadow: 0 0 12px var(--glow-pink);
+  }
+  .countdown__num {
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 5vw, 2.8rem);
+    line-height: 1;
+    color: #fff;
+    text-shadow: 0 0 18px rgba(255, 95, 168, 0.55);
+    font-variant-numeric: tabular-nums;
+  }
+  :global(.countdown__num.tick) { animation: tick 0.5s var(--ease); }
+  @keyframes tick {
+    0% { transform: translateY(-35%); opacity: 0; filter: blur(3px); }
+    100% { transform: none; opacity: 1; }
+  }
+  .countdown__label {
+    margin-top: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--peach);
+  }
+  .countdown__caption, .countdown__out {
+    margin-top: 0.8rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: #e6d6ef;
+    text-shadow: 0 2px 12px rgba(10, 6, 18, 0.9);
+  }
+  .countdown__caption strong { color: var(--sun); font-weight: 500; }
+  .countdown__out strong { color: var(--kick); }
+</style>

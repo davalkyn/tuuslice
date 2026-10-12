@@ -1,0 +1,208 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import PageHead from "../components/PageHead.astro";
+import SectionHead from "../components/SectionHead.astro";
+import { formatNumber, settings } from "../lib/site";
+
+const sol = settings.support.solana;
+const solShort = `${sol.slice(0, 4)}…${sol.slice(-7)}`;
+
+const stats = [
+  { label: "Discord members", value: settings.stats.discordMembers },
+  { label: "Telegram subscribers", value: settings.stats.telegramMembers },
+  { label: "Kick followers", value: settings.stats.kickFollowers },
+  { label: "YouTube subscribers", value: settings.stats.youtubeSubscribers },
+  { label: "Monthly site visitors", value: settings.stats.monthlyVisitors },
+].filter((s) => s.value > 0);
+
+const packages = [
+  { icon: "kick", name: "Stream shoutout", text: "Your product on screen and in chat during a GTA 6 stream, with a link in the stream panel." },
+  { icon: "spark", name: "Sponsored guide", text: "A clearly labeled guide or setup feature on this site, shared to Telegram and Discord." },
+  { icon: "users", name: "Community drop", text: "A giveaway or announcement in the Discord and Telegram, run by me with your rules." },
+];
+const services = ["AI agents", "Local AI deployment", "Browser & web tools", "Automation"];
+const mailSubject = encodeURIComponent("Sponsorship enquiry: tuuslice");
+---
+
+<BaseLayout title="Support & Sponsors" description="Support tuuslice: subscribe on Kick, tip via PayPal or Solana, sponsor a GTA 6 stream, or hire me for AI and web projects.">
+  <PageHead
+    eyebrow="Support the channel"
+    title="Fuel the"
+    accent="stream"
+    lead="Every sub, tip and sponsor goes straight back into better streams, faster news and more guides. Pick whatever works for you."
+  />
+
+  <section class="wrap">
+    <div class="support-grid" data-reveal-group>
+      <a class="pay glow-card pay--kick" href={settings.socials.kick} target="_blank" rel="noopener noreferrer">
+        <span class="pay__icon"><Icon name="kick" size={26} /></span>
+        <span class="pay__name display">Sub on Kick</span>
+        <span class="muted pay__text">The best way to support: subs and gifted subs on Kick. Subscribers get a Discord role.</span>
+        <span class="pay__cta">Subscribe <Icon name="arrow" size={16} /></span>
+      </a>
+      <a class="pay glow-card" href={settings.support.paypal} target="_blank" rel="noopener noreferrer">
+        <span class="pay__icon"><Icon name="paypal" size={26} /></span>
+        <span class="pay__name display">PayPal</span>
+        <span class="muted pay__text">One-off tips of any size. paypal.me/tuuslice</span>
+        <span class="pay__cta">Send a tip <Icon name="arrow" size={16} /></span>
+      </a>
+      <button class="pay glow-card" type="button" data-copy={sol}>
+        <span class="pay__icon"><Icon name="solana" size={26} /></span>
+        <span class="pay__name display">Solana</span>
+        <span class="muted pay__text mono" data-copy-display>{solShort}</span>
+        <span class="pay__cta"><span data-copy-label>Copy address</span> <Icon name="copy" size={16} /></span>
+      </button>
+    </div>
+  </section>
+
+  <section class="wrap section" id="sponsors">
+    <SectionHead
+      eyebrow="Work with me"
+      title="Sponsor a"
+      accent="stream"
+      lead="Gaming hardware, peripherals and apps that fit a GTA 6 audience. Every sponsorship is clearly labeled, and I only take brands I'd recommend anyway."
+    />
+    {
+      stats.length > 0 && (
+        <div class="stats" data-reveal-group>
+          {stats.map((s) => (
+            <div class="stat glow-card">
+              <span class="stat__num display grad-text">{formatNumber(s.value)}</span>
+              <span class="stat__label mono">{s.label}</span>
+            </div>
+          ))}
+        </div>
+      )
+    }
+    <div class="grid grid--3" data-reveal-group>
+      {
+        packages.map((p) => (
+          <div class="pkg glow-card">
+            <span class="pkg__icon"><Icon name={p.icon} size={22} /></span>
+            <h3 class="h3">{p.name}</h3>
+            <p class="muted">{p.text}</p>
+          </div>
+        ))
+      }
+    </div>
+    <div class="btn-row sponsor-cta" data-reveal>
+      <a class="btn btn--lg" href={`mailto:${settings.businessEmail}?subject=${mailSubject}`} data-magnetic><Icon name="handshake" /> Start a conversation</a>
+    </div>
+  </section>
+
+  <section class="wrap section" id="business">
+    <div class="biz glow-card glow-card--static" data-reveal>
+      <div class="biz__text">
+        <p class="eyebrow">Business inquiries</p>
+        <h2 class="h2">Need something <span class="grad-text--ocean">built?</span></h2>
+        <p class="muted">
+          Off stream I'm a software developer. I set up AI agents, build web tooling and get AI running locally. Open for freelance builds and
+          consulting.
+        </p>
+        <div class="chip-row">
+          {services.map((s) => <span class="pill pill--teal">{s}</span>)}
+        </div>
+      </div>
+      <a class="email glow-card" href={`mailto:${settings.businessEmail}`} data-copy={settings.businessEmail}>
+        <span class="pay__icon"><Icon name="mail" size={24} /></span>
+        <span class="email__meta">
+          <span class="display email__label">Email</span>
+          <span class="mono email__value" data-copy-display>click to decrypt</span>
+        </span>
+        <span class="pay__cta"><span data-copy-label>Copy</span></span>
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .support-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1rem, 2.4vw, 1.5rem); }
+  .pay {
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+    align-content: start;
+    padding: 1.6rem;
+    text-decoration: none;
+    color: inherit;
+    text-align: left;
+    font: inherit;
+    width: 100%;
+  }
+  .pay__icon {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    background: var(--grad-sunset);
+    color: #fff;
+    box-shadow: 0 12px 30px -12px var(--glow-pink);
+    transition: transform 0.5s var(--ease-spring);
+  }
+  .pay:hover .pay__icon { transform: rotate(-8deg) scale(1.08); }
+  .pay--kick .pay__icon { background: linear-gradient(120deg, #53fc18, #2bd96b); color: #06120a; box-shadow: 0 12px 30px -12px rgba(83, 252, 24, 0.6); }
+  .pay__name { font-size: 1.8rem; margin-top: 0.4rem; }
+  .pay__text { font-size: 0.94rem; line-height: 1.6; }
+  .pay__cta {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pink-hot);
+  }
+  :global(.pay.copied) .pay__cta, :global(.email.copied) .pay__cta { color: var(--teal); }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .stat { padding: 1.25rem; display: grid; gap: 0.3rem; }
+  .stat__num { font-size: 2.6rem; line-height: 1; }
+  .stat__label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); }
+  .pkg { padding: 1.5rem; display: grid; gap: 0.7rem; align-content: start; }
+  .pkg__icon {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: rgba(255, 45, 135, 0.14);
+    color: var(--pink-hot);
+    box-shadow: 0 0 0 1px rgba(255, 45, 135, 0.35);
+  }
+  .sponsor-cta { margin-top: 1.75rem; }
+
+  .biz {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 2rem;
+    align-items: center;
+    padding: clamp(1.6rem, 4vw, 2.75rem);
+  }
+  .biz__text { display: grid; gap: 1rem; }
+  .email {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem;
+    text-decoration: none;
+    color: inherit;
+  }
+  .email__meta { display: grid; min-width: 0; flex: 1; }
+  .email__label { font-size: 1.35rem; }
+  .email__value { font-size: 0.82rem; color: var(--text-faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .email .pay__cta { margin: 0; padding: 0; }
+
+  @media (max-width: 900px) {
+    .support-grid, .biz { grid-template-columns: 1fr; }
+  }
+</style>

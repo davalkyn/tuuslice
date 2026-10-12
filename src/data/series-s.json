@@ -1,0 +1,54 @@
+{
+  "updated": "2026-10-11",
+  "intro": "What we know about GTA 6 performance on Xbox Series S versus PS5 and Series X. Every row is labeled: rumor until it is verified by Rockstar or tested on stream.",
+  "rows": [
+    {
+      "metric": "Resolution",
+      "ps5": "~1440p",
+      "seriesX": "~1440p",
+      "seriesS": "~720p",
+      "status": "rumor",
+      "source": "GTA BOOM, citing Digital Foundry"
+    },
+    {
+      "metric": "Frame rate",
+      "ps5": "30 fps (60 fps mode rumored)",
+      "seriesX": "30 fps (60 fps mode rumored)",
+      "seriesS": "30 fps",
+      "status": "rumor",
+      "source": "Digital Citizen; Digital Foundry via GTA BOOM"
+    },
+    {
+      "metric": "Graphics modes",
+      "ps5": "Not announced",
+      "seriesX": "Not announced",
+      "seriesS": "Not announced",
+      "status": "unconfirmed",
+      "source": "No official performance targets published"
+    },
+    {
+      "metric": "PS5 Pro enhancements",
+      "ps5": "Not announced",
+      "seriesX": "n/a",
+      "seriesS": "n/a",
+      "status": "unconfirmed",
+      "source": "No official announcement"
+    },
+    {
+      "metric": "Install size",
+      "ps5": "TBC",
+      "seriesX": "TBC",
+      "seriesS": "TBC",
+      "status": "unconfirmed",
+      "source": "Will be tested on launch stream"
+    },
+    {
+      "metric": "Load times",
+      "ps5": "TBC",
+      "seriesX": "TBC",
+      "seriesS": "TBC",
+      "status": "unconfirmed",
+      "source": "Will be tested on launch stream"
+    }
+  ]
+}

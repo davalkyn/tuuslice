@@ -1,0 +1,234 @@
+---
+import { render } from "astro:content";
+import gear from "../data/gear.json";
+import BaseLayout from "./BaseLayout.astro";
+import Cover from "../components/Cover.astro";
+import GearCard from "../components/GearCard.astro";
+import Icon from "../components/Icon.astro";
+import JoinCTA from "../components/JoinCTA.astro";
+import PostCard from "../components/PostCard.astro";
+import SectionHead from "../components/SectionHead.astro";
+import ShareBar from "../components/ShareBar.astro";
+import StatusPill from "../components/StatusPill.astro";
+import { SECTIONS, postUrl, readingMinutes, type Post } from "../lib/content";
+import { SITE_NAME, formatDate } from "../lib/site";
+
+interface Props {
+  post: Post;
+  related: Post[];
+}
+const { post, related } = Astro.props;
+const { Content } = await render(post);
+const section = SECTIONS[post.collection];
+const data = post.data;
+const url = new URL(postUrl(post), Astro.site).toString();
+const vtName = `cover-${post.collection}-${post.id}`.replace(/[^a-zA-Z0-9-]/g, "-");
+
+const status = "status" in data ? data.status : undefined;
+const sources = "sources" in data ? data.sources : [];
+const platforms = "platforms" in data ? data.platforms : [];
+const gearIds = "gear" in data ? data.gear : [];
+const gearItems = gearIds.map((id) => gear.items.find((g) => g.id === id)).filter((g): g is (typeof gear.items)[number] => Boolean(g));
+const platformLabels: Record<string, string> = { ps5: "PS5", "xbox-series-x": "Xbox Series X", "xbox-series-s": "Xbox Series S", pc: "PC" };
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": post.collection === "news" ? "NewsArticle" : "Article",
+    headline: data.title,
+    description: data.description,
+    datePublished: data.pubDate.toISOString(),
+    dateModified: (data.updatedDate ?? data.pubDate).toISOString(),
+    author: { "@type": "Person", name: SITE_NAME, url: Astro.site?.toString() },
+    publisher: { "@type": "Organization", name: SITE_NAME },
+    mainEntityOfPage: url,
+    image: new URL(data.cover ?? "/og-default.png", Astro.site).toString(),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: new URL("/", Astro.site).toString() },
+      { "@type": "ListItem", position: 2, name: section.label, item: new URL(`${section.path}/`, Astro.site).toString() },
+      { "@type": "ListItem", position: 3, name: data.title, item: url },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  image={data.cover}
+  type="article"
+  publishedTime={data.pubDate}
+  modifiedTime={data.updatedDate}
+  section={section.label}
+  jsonLd={jsonLd}
+>
+  <article class="article">
+    <header class="page-head wrap wrap--narrow article__head">
+      <nav class="crumbs mono" aria-label="Breadcrumb" data-reveal>
+        <a href="/">Home</a><span aria-hidden="true">/</span><a href={`${section.path}/`}>{section.label}</a>
+      </nav>
+      <div class="chip-row" data-reveal style="--reveal-delay: 60ms">
+        <span class={`pill pill--${section.tone}`}>{section.single}</span>
+        {status && <StatusPill status={status} />}
+        {platforms.map((p) => <span class="pill">{platformLabels[p]}</span>)}
+      </div>
+      <h1 class="article__title" data-reveal style="--reveal-delay: 120ms">{data.title}</h1>
+      <p class="lead" data-reveal style="--reveal-delay: 180ms">{data.description}</p>
+      <p class="article__meta mono" data-reveal style="--reveal-delay: 220ms">
+        <Icon name="calendar" size={15} />
+        <time datetime={data.pubDate.toISOString()}>{formatDate(data.pubDate)}</time>
+        {
+          data.updatedDate && (
+            <>
+              <span aria-hidden="true">·</span> Updated <time datetime={data.updatedDate.toISOString()}>{formatDate(data.updatedDate)}</time>
+            </>
+          )
+        }
+        <span aria-hidden="true">·</span>
+        <Icon name="clock" size={15} />
+        {readingMinutes(post.body)} min read
+      </p>
+    </header>
+
+    <div class="wrap article__cover" data-reveal style="--reveal-delay: 120ms">
+      <Cover kind={post.collection} src={data.cover} alt={data.coverAlt} size="hero" vtName={vtName} eager />
+    </div>
+
+    <div class="wrap wrap--narrow article__body">
+      {
+        status === "rumor" && (
+          <p class="notice">
+            <Icon name="info" />
+            <span>
+              <strong>Rumor check:</strong> this has not been confirmed by Rockstar or Take-Two. Treat it as unverified until an official source says
+              otherwise.
+            </span>
+          </p>
+        )
+      }
+      {
+        status === "unconfirmed" && (
+          <p class="notice">
+            <Icon name="info" />
+            <span>
+              <strong>Unconfirmed:</strong> details here may change. We'll update this post when there's an official word.
+            </span>
+          </p>
+        )
+      }
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      {
+        sources.length > 0 && (
+          <aside class="sources glow-card glow-card--static">
+            <p class="eyebrow">Sources</p>
+            <p class="muted sources__lead">This is a summary. Read the full reporting at the source:</p>
+            <ul>
+              {sources.map((s) => (
+                <li>
+                  {s.url ? (
+                    <a href={s.url} target="_blank" rel="noopener noreferrer">
+                      {s.name} <Icon name="external" size={14} />
+                    </a>
+                  ) : (
+                    <span>{s.name}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </aside>
+        )
+      }
+
+      {
+        gearItems.length > 0 && (
+          <aside class="gear-box">
+            <div class="gear-box__head">
+              <p class="eyebrow">Gear for this guide</p>
+              <p class="faint gear-box__disc">
+                Some links are affiliate links: buying through them supports the channel at no extra cost to you. <a href="/disclosure/">Disclosure</a>
+              </p>
+            </div>
+            <div class="grid grid--2">
+              {gearItems.map((item) => (
+                <GearCard item={item} compact />
+              ))}
+            </div>
+          </aside>
+        )
+      }
+
+      <div class="article__share">
+        <ShareBar url={url} title={data.title} />
+      </div>
+    </div>
+
+    <div class="wrap section">
+      <JoinCTA />
+    </div>
+
+    {
+      related.length > 0 && (
+        <section class="wrap section">
+          <SectionHead eyebrow={`More ${section.label.toLowerCase()}`} title="Keep" accent="reading" href={`${section.path}/`} />
+          <div class="grid grid--3" data-reveal-group>
+            {related.map((p) => (
+              <PostCard post={p} />
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </article>
+</BaseLayout>
+
+<style>
+  .article__head { display: grid; gap: 1rem; padding-bottom: 2rem; }
+  .crumbs { display: flex; gap: 0.6rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); }
+  .crumbs a { color: var(--text-dim); text-decoration: none; }
+  .crumbs a:hover { color: var(--pink-hot); }
+  .article__title {
+    font-size: clamp(2.4rem, 6.4vw, 4.4rem);
+    line-height: 0.98;
+    text-shadow: 0 0 40px rgba(255, 45, 135, 0.25);
+  }
+  .article__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+  }
+  .article__cover { max-width: 1040px; }
+  .article__cover :global(.cover) {
+    border: 1px solid var(--border);
+    box-shadow: 0 40px 100px -50px rgba(255, 45, 135, 0.6);
+  }
+  .article__body { display: grid; gap: 2rem; padding-top: clamp(2rem, 5vw, 3rem); }
+  .sources { padding: 1.4rem 1.5rem; display: grid; gap: 0.6rem; }
+  .sources__lead { font-size: 0.94rem; }
+  .sources ul { list-style: none; display: grid; gap: 0.45rem; }
+  .sources a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--teal);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .sources a:hover { color: #fff; text-shadow: 0 0 12px var(--glow-teal); }
+  .gear-box { display: grid; gap: 1rem; }
+  .gear-box__head { display: grid; gap: 0.4rem; }
+  .gear-box__disc { font-size: 0.85rem; }
+  .gear-box__disc a { color: var(--text-dim); }
+  .article__share { padding-top: 1.5rem; border-top: 1px solid var(--border); }
+</style>

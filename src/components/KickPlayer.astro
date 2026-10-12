@@ -1,0 +1,79 @@
+---
+import { kickPlayerUrl, settings } from "../lib/site";
+import Icon from "./Icon.astro";
+
+interface Props {
+  /** Load the player straight away (live page) instead of on click (home page). */
+  eager?: boolean;
+}
+const { eager = false } = Astro.props;
+---
+
+<div class="kick-player">
+  {
+    eager ? (
+      <iframe class="kick-player__frame" src={kickPlayerUrl} title="tuuslice live on Kick" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen />
+    ) : (
+      <button class="kick-player__facade" type="button" data-embed={kickPlayerUrl} data-title="tuuslice live on Kick" data-frame-class="kick-player__frame">
+        <span class="kick-player__glow" aria-hidden="true" />
+        <span class="kick-player__play" aria-hidden="true">
+          <Icon name="play" size={30} />
+        </span>
+        <span class="kick-player__label">
+          <span class="display">Load the stream</span>
+          <span class="mono">kick.com/{settings.kickSlug}</span>
+        </span>
+      </button>
+    )
+  }
+</div>
+
+<style>
+  .kick-player {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #07040d;
+    border: 1px solid var(--border);
+    box-shadow: 0 30px 80px -40px rgba(83, 252, 24, 0.35), 0 30px 80px -40px rgba(255, 45, 135, 0.5);
+  }
+  :global(.kick-player__frame) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .kick-player__facade {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 1rem;
+    background:
+      radial-gradient(60% 70% at 50% 100%, rgba(83, 252, 24, 0.22), transparent 70%),
+      radial-gradient(50% 60% at 20% 0%, rgba(255, 45, 135, 0.25), transparent 70%),
+      linear-gradient(180deg, #0d0716, #120a1f);
+  }
+  .kick-player__glow {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0 2px, transparent 2px 4px);
+  }
+  .kick-player__play {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    color: #06120a;
+    background: linear-gradient(120deg, #53fc18, #2bd96b);
+    box-shadow: 0 0 0 10px rgba(83, 252, 24, 0.12), 0 0 50px rgba(83, 252, 24, 0.5);
+    transition: transform 0.5s var(--ease-spring), box-shadow 0.5s var(--ease);
+  }
+  .kick-player__facade:hover .kick-player__play {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 16px rgba(83, 252, 24, 0.14), 0 0 80px rgba(83, 252, 24, 0.65);
+  }
+  .kick-player__label { position: relative; display: grid; gap: 0.2rem; text-align: center; }
+  .kick-player__label .display { font-size: clamp(1.4rem, 3vw, 2rem); }
+  .kick-player__label .mono { font-size: 0.78rem; color: var(--text-dim); letter-spacing: 0.08em; }
+</style>

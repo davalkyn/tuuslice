@@ -1,0 +1,127 @@
+---
+import { settings } from "../lib/site";
+import Icon from "./Icon.astro";
+
+interface Props {
+  title?: string;
+  accent?: string;
+  lead?: string;
+}
+const {
+  title = "Don't watch",
+  accent = "alone",
+  lead = "Catch the streams on Kick, hang out in Discord, and get every GTA 6 headline on Telegram first.",
+} = Astro.props;
+
+const cards = [
+  { key: "kick", name: "Kick", href: settings.socials.kick, action: "Follow & subscribe", text: "Live GTA 6 streams, launch nights and Series S tests. Subs get Discord perks.", tone: "kick" },
+  { key: "discord", name: "Discord", href: settings.socials.discord, action: "Join the server", text: "LFG for co-op, the rumor check channel, clips and spoiler-safe launch chat.", tone: "violet" },
+  { key: "telegram", name: "Telegram", href: settings.socials.telegram, action: "Get news alerts", text: "One post per story, straight to your phone. The fastest way to hear what dropped.", tone: "teal" },
+];
+---
+
+<section class="join" data-reveal>
+  <div class="join__head">
+    <h2 class="h2">{title} <span class="grad-text">{accent}</span></h2>
+    <p class="lead">{lead}</p>
+  </div>
+  <div class="join__grid" data-reveal-group>
+    {
+      cards.map((c) => (
+        <a class={`join__card glow-card join__card--${c.tone}`} href={c.href} target="_blank" rel="noopener noreferrer">
+          <span class="join__icon">
+            <Icon name={c.key} size={24} />
+          </span>
+          <span class="join__name">{c.name}</span>
+          <span class="join__text">{c.text}</span>
+          <span class="join__action">
+            {c.action} <Icon name="arrow" size={16} />
+          </span>
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .join {
+    position: relative;
+    padding: clamp(1.75rem, 5vw, 3.25rem);
+    border-radius: calc(var(--radius) + 8px);
+    background:
+      radial-gradient(70% 90% at 100% 0%, rgba(255, 45, 135, 0.18), transparent 60%),
+      radial-gradient(60% 80% at 0% 100%, rgba(34, 228, 217, 0.12), transparent 60%),
+      rgba(20, 10, 32, 0.7);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .join::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--grad-neon);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.55;
+    animation: spin-border 8s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes spin-border { to { --angle: 360deg; } }
+  .join__head { display: grid; gap: 0.75rem; margin-bottom: 2rem; }
+  .join__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .join__card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 1.4rem;
+    text-decoration: none;
+    color: inherit;
+  }
+  .join__icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    color: var(--tone);
+    background: color-mix(in srgb, var(--tone) 14%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--tone) 35%, transparent);
+    transition: all 0.4s var(--ease);
+  }
+  .join__card:hover .join__icon {
+    color: #0a0612;
+    background: var(--tone);
+    box-shadow: 0 0 30px color-mix(in srgb, var(--tone) 60%, transparent);
+    transform: rotate(-6deg) scale(1.06);
+  }
+  .join__card--kick { --tone: var(--kick); }
+  .join__card--violet { --tone: #8f7bff; }
+  .join__card--teal { --tone: var(--teal); }
+  .join__name { font-family: var(--font-display); font-size: 1.7rem; text-transform: uppercase; line-height: 1; margin-top: 0.4rem; }
+  .join__text { color: var(--text-dim); font-size: 0.94rem; line-height: 1.6; }
+  .join__action {
+    margin-top: auto;
+    padding-top: 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--tone);
+  }
+  .join__action :global(svg) { transition: transform 0.4s var(--ease); }
+  .join__card:hover .join__action :global(svg) { transform: translateX(5px); }
+
+  @media (max-width: 860px) {
+    .join__grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,101 @@
+---
+interface Props {
+  kind: "news" | "guides" | "tips" | "blog" | "video";
+  src?: string;
+  alt?: string;
+  label?: string;
+  size?: "card" | "hero";
+  vtName?: string;
+  eager?: boolean;
+}
+const { kind, src, alt = "", label, size = "card", vtName, eager = false } = Astro.props;
+const words = { news: "News", guides: "Guide", tips: "Tip", blog: "Blog", video: "Watch" };
+---
+
+<div class:list={["cover", `cover--${kind}`, `cover--${size}`]} style={vtName ? `view-transition-name: ${vtName}` : undefined}>
+  {
+    src ? (
+      <img src={src} alt={alt} loading={eager ? "eager" : "lazy"} decoding="async" />
+    ) : (
+      <div class="cover__art" aria-hidden="true">
+        <span class="cover__sun" />
+        <span class="cover__grid" />
+        <span class="cover__word">{label ?? words[kind]}</span>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .cover {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background: #12091d;
+  }
+  .cover--hero { aspect-ratio: 21 / 9; border-radius: var(--radius); }
+  .cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s var(--ease), filter 0.6s var(--ease);
+  }
+  .cover__art {
+    position: absolute;
+    inset: 0;
+    background: var(--cover-bg);
+    transition: transform 0.8s var(--ease);
+  }
+  .cover--news { --cover-bg: linear-gradient(180deg, #160a2b 0%, #4a1150 50%, #d42a64 100%); --cover-sun: linear-gradient(180deg, #ffd56b, #ff2d87); }
+  .cover--guides { --cover-bg: linear-gradient(180deg, #1a0b26 0%, #6b1a4a 50%, #ff7a3d 100%); --cover-sun: linear-gradient(180deg, #fff1b8, #ff7a3d); }
+  .cover--tips { --cover-bg: linear-gradient(180deg, #0a1426 0%, #123a5a 50%, #22e4d9 100%); --cover-sun: linear-gradient(180deg, #c9fbf7, #7b5cff); }
+  .cover--blog { --cover-bg: linear-gradient(180deg, #1c0b2e 0%, #5a1f6e 50%, #ffb347 100%); --cover-sun: linear-gradient(180deg, #fff1b8, #ff5fa8); }
+  .cover--video { --cover-bg: linear-gradient(180deg, #0f0a1f 0%, #3a1240 50%, #ff2d87 100%); --cover-sun: linear-gradient(180deg, #ffd6a0, #ff2d87); }
+
+  .cover__sun {
+    position: absolute;
+    left: 66%;
+    bottom: 34%;
+    width: 38%;
+    aspect-ratio: 1;
+    translate: -50% 50%;
+    border-radius: 50%;
+    background: var(--cover-sun);
+    box-shadow: 0 0 60px rgba(255, 179, 71, 0.45);
+    -webkit-mask: linear-gradient(180deg, #000 0 50%, transparent 50% 54%, #000 54% 62%, transparent 62% 67%, #000 67% 74%, transparent 74% 81%, #000 81%);
+    mask: linear-gradient(180deg, #000 0 50%, transparent 50% 54%, #000 54% 62%, transparent 62% 67%, #000 67% 74%, transparent 74% 81%, #000 81%);
+  }
+  .cover__grid {
+    position: absolute;
+    left: -50%;
+    right: -50%;
+    bottom: 0;
+    height: 34%;
+    background:
+      linear-gradient(180deg, rgba(10, 6, 18, 0.2), rgba(10, 6, 18, 0.95)),
+      repeating-linear-gradient(90deg, rgba(255, 95, 168, 0.55) 0 1px, transparent 1px 44px),
+      repeating-linear-gradient(180deg, rgba(255, 95, 168, 0.55) 0 1px, transparent 1px 16px),
+      #0d0716;
+    transform: perspective(160px) rotateX(48deg);
+    transform-origin: top;
+  }
+  .cover__word {
+    position: absolute;
+    left: 6%;
+    top: 10%;
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 7vw, 4.2rem);
+    line-height: 1;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.92);
+    text-shadow: 0 0 24px rgba(255, 45, 135, 0.6);
+    letter-spacing: 0.02em;
+  }
+  .cover--hero .cover__word { font-size: clamp(3rem, 10vw, 7rem); }
+
+  :global(.glow-card:hover) .cover img,
+  :global(.glow-card:hover) .cover__art {
+    transform: scale(1.06);
+  }
+  :global(.glow-card:hover) .cover img { filter: saturate(1.15); }
+</style>

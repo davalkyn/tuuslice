@@ -1,0 +1,52 @@
+{
+  "items": [
+    {
+      "id": "series-s-storage",
+      "name": "Xbox Series X|S Storage Expansion Card",
+      "category": "Storage",
+      "why": "The Series S has the smallest drive of the current consoles. An expansion card means you can keep GTA 6 installed alongside everything else.",
+      "url": "",
+      "featured": true
+    },
+    {
+      "id": "capture-card",
+      "name": "HDMI capture card (1080p60 passthrough)",
+      "category": "Streaming",
+      "why": "Kick is not a built-in Xbox broadcast target, so the console feeds a capture card and OBS on the PC does the streaming.",
+      "url": "",
+      "featured": true
+    },
+    {
+      "id": "rtx-5060-ti",
+      "name": "NVIDIA GeForce RTX 5060 Ti",
+      "category": "Streaming",
+      "why": "Its NVENC encoder handles the stream encode on the PC, so the console runs the game and the GPU does the broadcast work.",
+      "url": "",
+      "featured": true
+    },
+    {
+      "id": "usb-mic",
+      "name": "USB streaming microphone",
+      "category": "Audio",
+      "why": "Clear voice matters more than video quality for small streams. A plug-and-play USB mic is the cheapest upgrade with the biggest payoff.",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": "headset",
+      "name": "Wired gaming headset",
+      "category": "Audio",
+      "why": "Hear the game and chat without your mic picking up speaker audio.",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": "hdmi-cable",
+      "name": "High Speed HDMI 2.1 cables (x2)",
+      "category": "Streaming",
+      "why": "One cable from the console into the capture card, one from the card's passthrough out to your TV or monitor.",
+      "url": "",
+      "featured": false
+    }
+  ]
+}

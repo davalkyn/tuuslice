@@ -1,0 +1,20 @@
+---
+import { settings } from "../lib/site";
+import Icon from "./Icon.astro";
+
+interface Props {
+  title: string;
+  text: string;
+}
+const { title, text } = Astro.props;
+---
+
+<div class="empty-state glow-card glow-card--static">
+  <h2 class="h3">{title}</h2>
+  <p class="muted">{text}</p>
+  <div class="btn-row">
+    <a class="btn btn--ghost btn--sm" href={settings.socials.telegram} target="_blank" rel="noopener noreferrer">
+      <Icon name="telegram" size={16} /> Get alerts on Telegram
+    </a>
+  </div>
+</div>

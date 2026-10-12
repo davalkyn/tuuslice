@@ -1,0 +1,62 @@
+---
+import schedule from "../data/schedule.json";
+
+const tzLabel = schedule.timezone === "Africa/Johannesburg" ? "SAST" : schedule.timezone;
+const end = (start: string, mins: number) => {
+  const [h, m] = start.split(":").map(Number);
+  const total = h * 60 + (m || 0) + mins;
+  return `${String(Math.floor(total / 60) % 24).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
+};
+---
+
+<div class="schedule" data-schedule={schedule.timezone}>
+  <p class="schedule__next mono" data-next-stream hidden></p>
+  <ol class="schedule__list">
+    {
+      schedule.slots.map((slot) => (
+        <li class="schedule__slot glow-card" data-slot data-day={slot.day} data-start={slot.start} data-duration={slot.durationMinutes} data-title={slot.title}>
+          <span class="schedule__day display" data-slot-day>{slot.day}</span>
+          <span class="schedule__title">{slot.title}</span>
+          <span class="schedule__time mono" data-slot-time>
+            {slot.start} – {end(slot.start, slot.durationMinutes)} {tzLabel}
+          </span>
+        </li>
+      ))
+    }
+  </ol>
+  <p class="schedule__note faint">
+    Times are shown in your time zone (<span data-local-zone>{tzLabel}</span>). {schedule.note}
+  </p>
+</div>
+
+<style>
+  .schedule { display: grid; gap: 1rem; }
+  .schedule__next {
+    justify-self: start;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    color: #d9ffc9;
+    background: rgba(83, 252, 24, 0.1);
+    border: 1px solid rgba(83, 252, 24, 0.4);
+    box-shadow: 0 0 22px rgba(83, 252, 24, 0.2);
+  }
+  .schedule__list { list-style: none; display: grid; gap: 0.75rem; }
+  .schedule__slot {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    grid-template-areas: "day title" "day time";
+    align-items: center;
+    column-gap: 1rem;
+    row-gap: 0.15rem;
+    padding: 0.9rem 1.2rem;
+  }
+  .schedule__day { grid-area: day; font-size: 1.35rem; color: var(--sun); }
+  .schedule__title { grid-area: title; color: var(--text); font-weight: 500; line-height: 1.4; }
+  .schedule__time { grid-area: time; font-size: 0.78rem; color: var(--text-dim); }
+  .schedule__note { font-size: 0.85rem; }
+  @media (max-width: 640px) {
+    .schedule__slot { grid-template-columns: 1fr; grid-template-areas: "day" "title" "time"; }
+  }
+</style>

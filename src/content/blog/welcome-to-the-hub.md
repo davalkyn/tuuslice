@@ -25,6 +25,6 @@ GTA 6 is almost here, and this site is now home base for everything we do around
 
 ## How you can help
 
-Follow on [Kick](https://kick.com/tuuslice) so you get the go-live ping, join the [Discord](/community/), and share posts you find useful. It all helps a small channel get found. If you want to go further, there's a [support page](/support/) too.
+Follow on [Kick](https://kick.com/2slice) so you get the go-live ping, join the [Discord](/community/), and share posts you find useful. It all helps a small channel get found. If you want to go further, there's a [support page](/support/) too.
 
 See you in Leonida.

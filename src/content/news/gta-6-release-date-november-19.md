@@ -25,4 +25,4 @@ sources:
 
 ## Launch plan on the channel
 
-We'll be live on [Kick](https://kick.com/tuuslice) for launch, with spoiler rules on in chat and a Series S performance test in the first 48 hours. The [countdown on the home page](/) runs to midnight in your own time zone.
+We'll be live on [Kick](https://kick.com/2slice) for launch, with spoiler rules on in chat and a Series S performance test in the first 48 hours. The [countdown on the home page](/) runs to midnight in your own time zone.

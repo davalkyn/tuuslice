@@ -11,7 +11,7 @@
 
 const KICK_TOKEN_URL = "https://id.kick.com/oauth/token";
 const KICK_CHANNELS_URL = "https://api.kick.com/public/v1/channels";
-const DEFAULT_SLUG = "tuuslice";
+const DEFAULT_SLUG = "2slice";
 const CACHE_SECONDS = 60;
 
 let appToken = null; // { value, expiresAt }

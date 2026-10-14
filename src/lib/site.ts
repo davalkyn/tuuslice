@@ -17,7 +17,7 @@ export const NAV = [
 ] as const;
 
 export const SOCIALS = [
-  { key: "kick", label: "Kick", href: settings.socials.kick, handle: "kick.com/tuuslice" },
+  { key: "kick", label: "Kick", href: settings.socials.kick, handle: `kick.com/${settings.kickSlug}` },
   { key: "discord", label: "Discord", href: settings.socials.discord, handle: "Join the server" },
   { key: "telegram", label: "Telegram", href: settings.socials.telegram, handle: "News channel" },
   { key: "youtube", label: "YouTube", href: settings.socials.youtube, handle: "@tuuslice" },

@@ -12,7 +12,7 @@ import StatusPill from "../components/StatusPill.astro";
 import VideoCard from "../components/VideoCard.astro";
 import seriesS from "../data/series-s.json";
 import { getAllPosts, getPosts, getVideos } from "../lib/content";
-import { SOCIALS } from "../lib/site";
+import { SOCIALS, settings } from "../lib/site";
 
 const news = (await getPosts("news")).slice(0, 3);
 const howTo = await getAllPosts(["guides", "tips"]);
@@ -117,6 +117,40 @@ const contentLinks = SOCIALS.filter((s) => ["youtube", "tiktok", "kick"].include
         </div>
       )
     }
+  </section>
+
+  <section class="section wrap follow" id="follow" data-reveal>
+    <div class="follow__head">
+      <p class="eyebrow">New here?</p>
+      <h2 class="h2">Follow in <span class="grad-text">3 steps</span></h2>
+      <p class="lead">Each button shows the exact handle, so you can check you're on the real account.</p>
+    </div>
+    <ol class="follow__steps" data-reveal-group>
+      <li class="follow__step glow-card">
+        <span class="follow__num display">1</span>
+        <h3 class="h3">Follow on Kick</h3>
+        <p class="muted">Get the go-live ping the second a stream starts.</p>
+        <a class="btn btn--kick btn--sm" href={settings.socials.kick} target="_blank" rel="noopener noreferrer" data-magnetic>
+          <Icon name="kick" size={16} /> kick.com/{settings.kickSlug}
+        </a>
+      </li>
+      <li class="follow__step glow-card">
+        <span class="follow__num display">2</span>
+        <h3 class="h3">Join the Discord</h3>
+        <p class="muted">LFG for co-op, the rumor check, clips and spoiler-safe launch chat.</p>
+        <a class="btn btn--ghost btn--sm" href={settings.socials.discord} target="_blank" rel="noopener noreferrer" data-magnetic>
+          <Icon name="discord" size={16} /> Join the server
+        </a>
+      </li>
+      <li class="follow__step glow-card">
+        <span class="follow__num display">3</span>
+        <h3 class="h3">Turn on Telegram alerts</h3>
+        <p class="muted">One post per story, straight to your phone. The fastest way to hear the news.</p>
+        <a class="btn btn--ghost btn--sm" href={settings.socials.telegram} target="_blank" rel="noopener noreferrer" data-magnetic>
+          <Icon name="telegram" size={16} /> Get news alerts
+        </a>
+      </li>
+    </ol>
   </section>
 
   <div class="section wrap">
@@ -258,8 +292,34 @@ const contentLinks = SOCIALS.filter((s) => ["youtube", "tiktok", "kick"].include
   .duo__card:hover .duo__icon { transform: rotate(-8deg) scale(1.08); }
   .duo__card .link-arrow { margin-top: 0.4rem; }
 
+  .follow__head { display: grid; gap: 0.75rem; margin-bottom: clamp(1.75rem, 4vw, 2.5rem); }
+  .follow__steps {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1rem, 2.4vw, 1.5rem);
+  }
+  .follow__step {
+    display: grid;
+    align-content: start;
+    justify-items: start;
+    gap: 0.6rem;
+    padding: clamp(1.4rem, 3vw, 1.9rem);
+  }
+  .follow__num {
+    font-size: 2.6rem;
+    line-height: 1;
+    background: var(--grad-sunset);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 14px rgba(255, 45, 135, 0.35));
+  }
+  .follow__step .btn { margin-top: 0.4rem; max-width: 100%; }
+
   @media (max-width: 920px) {
     .live-strip, .tracker { grid-template-columns: 1fr; }
+    .follow__steps { grid-template-columns: 1fr; }
   }
   @media (max-width: 560px) {
     .tracker__row { grid-template-columns: 1fr auto auto; }

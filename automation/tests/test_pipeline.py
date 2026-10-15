@@ -276,5 +276,30 @@ class PipelineTests(unittest.TestCase):
         self.assertTrue(any("TELEGRAM_CHANNEL_ID" in call[2] for call in tg.calls if call[0] == "send"))
 
 
+    def test_ids_reports_the_user_and_a_forwarded_channel(self):
+        import contextlib
+        import io
+
+        class IdTelegram(FakeTelegram):
+            def get_updates(self, offset):
+                return [{"update_id": 1, "message": {
+                    "from": {"id": 111, "first_name": "Owner"},
+                    "chat": {"id": 111, "type": "private"},
+                    "forward_from_chat": {"id": -1001234, "type": "channel", "title": "TUUSLICE"},
+                    "text": "forwarded",
+                }}]
+
+        original = scout.Telegram.from_env
+        scout.Telegram.from_env = classmethod(lambda cls: IdTelegram())
+        try:
+            buffer = io.StringIO()
+            with contextlib.redirect_stdout(buffer):
+                scout.show_ids()
+        finally:
+            scout.Telegram.from_env = original
+        self.assertIn("user id 111", buffer.getvalue())
+        self.assertIn("chat id -1001234 (channel) TUUSLICE", buffer.getvalue())
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -2,6 +2,7 @@
 
     python automation/scout.py check              verify the token and webhook (sends nothing)
     python automation/scout.py test-card          send one sample draft with buttons (publishes nowhere)
+    python automation/scout.py ids                show your user ID and channel ID (stop serve first)
     python automation/scout.py serve              keep running: handle buttons, post approved fun items
     python automation/scout.py serve --dry-run    same, but publishing only writes to automation/state/dry-run
 
@@ -181,6 +182,30 @@ def check() -> None:
         print("No webhook is set, so Scout can read button presses.")
 
 
+def show_ids() -> None:
+    """Print the user and chat IDs in Telegram's waiting updates: your user ID, and the channel ID.
+
+    Stop `serve` first. Telegram allows one reader of updates at a time.
+    """
+    tg = Telegram.from_env()
+    chats: dict = {}
+    for update in tg.get_updates(0):
+        message = update.get("message") or update.get("channel_post") or {}
+        sender = message.get("from") or {}
+        if sender:
+            print(f"user id {sender.get('id')} ({sender.get('first_name', '')})")
+        chat = message.get("chat") or {}
+        if chat:
+            chats[chat.get("id")] = (chat.get("type"), chat.get("title") or chat.get("first_name") or "")
+        forwarded = message.get("forward_from_chat") or {}
+        if forwarded:
+            chats[forwarded.get("id")] = (forwarded.get("type"), forwarded.get("title") or "")
+    for chat_id, (kind, name) in chats.items():
+        print(f"chat id {chat_id} ({kind}) {name}")
+    if not chats:
+        print("No waiting updates. Send /start to Scout, or forward a channel post to Scout, then run this again.")
+
+
 def serve(dry_run: bool) -> None:
     tg = Telegram.from_env()
     if tg.webhook_url():
@@ -213,6 +238,7 @@ def main() -> None:
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("check", help="verify the token and webhook")
     sub.add_parser("test-card", help="send one sample draft")
+    sub.add_parser("ids", help="show your user ID and chat IDs from waiting updates")
     serve_parser = sub.add_parser("serve", help="run the approval bot")
     serve_parser.add_argument("--dry-run", action="store_true", help="never touch git or the channel")
     args = parser.parse_args()
@@ -221,6 +247,8 @@ def main() -> None:
         check()
     elif args.command == "test-card":
         send_test_card(Telegram.from_env())
+    elif args.command == "ids":
+        show_ids()
     else:
         serve(dry_run=args.dry_run)
 

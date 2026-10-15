@@ -73,7 +73,9 @@ def publish_news(post: dict, *, draft_id: str, dry_run: bool = False) -> str:
     email = common.env("SCOUT_GIT_EMAIL", "scout@localhost")
 
     with common.Lock("publish"):
-        if git("status", "--porcelain", cwd=repo):
+        # Only changed tracked files block a publish. Stray untracked files (Thumbs.db, editor backups)
+        # are ignored, because only the new post file is ever staged.
+        if git("status", "--porcelain", "--untracked-files=no", cwd=repo):
             raise RuntimeError("the site checkout has uncommitted changes, so nothing was published")
         current = git("rev-parse", "--abbrev-ref", "HEAD", cwd=repo)
         if current != branch:

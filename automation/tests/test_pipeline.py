@@ -183,11 +183,16 @@ class PipelineTests(unittest.TestCase):
         self.assertIn("News: GTA 6 launch date confirmed", git("log", "--oneline", "-1", "master", cwd=self.tmp / "origin.git"))
         self.assertEqual(git("status", "--porcelain", cwd=self.site), "")
 
-    def test_publish_refuses_a_dirty_checkout(self):
-        (self.site / "stray.txt").write_text("x")
+    def test_publish_refuses_changed_tracked_files(self):
+        (self.site / "src/content/news/.gitkeep").write_text("edited by hand")
         with self.assertRaises(RuntimeError):
             publisher.publish_news(SAMPLE_POST, draft_id="abcdef123456")
         self.assertFalse(list((self.site / "src/content/news").glob("*.md")))
+
+    def test_stray_untracked_files_do_not_block_publishing(self):
+        (self.site / "Thumbs.db").write_text("windows junk")
+        publisher.publish_news(SAMPLE_POST, draft_id="abcdef123456")
+        self.assertEqual(len(list((self.site / "src/content/news").glob("*.md"))), 1)
 
     # ---- button handling -----------------------------------------------------
 

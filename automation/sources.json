@@ -1,0 +1,4 @@
+{
+  "_help": "List the RSS or Atom feeds you trust, one object per feed. Set official to true only for Rockstar, Take-Two or console newsroom feeds; only those can produce a verified label. Set enabled to false to pause a feed.",
+  "feeds": []
+}

@@ -4,3 +4,6 @@ dist/
 .astro/
 .dev.vars
 .DS_Store
+automation/.env
+automation/state/
+__pycache__/

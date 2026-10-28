@@ -26,5 +26,11 @@
   },
   "discordServerId": "",
   "adsenseClientId": "",
-  "cfAnalyticsToken": ""
+  "cfAnalyticsToken": "",
+  "auraclip": {
+    "site": "https://getauraclip.pages.dev/",
+    "trial": "https://github.com/davalkyn/auraclip-releases/releases/latest",
+    "buy": "https://auraclipz.gumroad.com/l/auraclip",
+    "support": "contact@irenew.co.za"
+  }
 }

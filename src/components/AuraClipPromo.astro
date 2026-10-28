@@ -1,0 +1,52 @@
+---
+import { settings } from "../lib/site";
+import Icon from "./Icon.astro";
+const a = settings.auraclip;
+---
+
+<section class="promo glow-card glow-card--static" data-reveal>
+  <div class="promo__text">
+    <p class="eyebrow">My clipping tool</p>
+    <h2 class="h2">Clip GTA 6 streams <span class="grad-text--ocean">on your own PC</span></h2>
+    <p class="lead">
+      AuraClip finds the best moments in a stream, cuts captioned vertical clips, and posts only after you approve.
+      Analysis and rendering run locally, so your footage is never uploaded to us.
+    </p>
+    <div class="btn-row">
+      <a class="btn btn--lg" href="/auraclip/" data-magnetic>See how it works <Icon name="arrow" /></a>
+      <a class="btn btn--ghost btn--lg" href={a.trial} target="_blank" rel="noopener noreferrer">Free 7-day trial</a>
+    </div>
+  </div>
+  <ul class="promo__facts">
+    <li><strong>Local</strong><span>Analysis and rendering on your PC</span></li>
+    <li><strong>You approve</strong><span>Nothing goes live until you say so</span></li>
+    <li><strong>Windows</strong><span>10 or 11, 64-bit. Mac not yet</span></li>
+  </ul>
+</section>
+
+<style>
+  .promo {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    background:
+      radial-gradient(70% 90% at 0% 100%, rgba(34, 228, 217, 0.14), transparent 60%),
+      radial-gradient(60% 80% at 100% 0%, rgba(255, 45, 135, 0.14), transparent 60%),
+      var(--panel);
+  }
+  .promo__text { display: grid; gap: 1rem; justify-items: start; }
+  .promo__facts { list-style: none; display: grid; gap: 0.75rem; }
+  .promo__facts li {
+    display: grid;
+    gap: 0.15rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: rgba(10, 6, 18, 0.55);
+  }
+  .promo__facts strong { font-family: var(--font-display); text-transform: uppercase; font-size: 1.25rem; font-weight: 400; color: var(--teal); }
+  .promo__facts span { color: var(--text-dim); font-size: 0.92rem; }
+  @media (max-width: 820px) { .promo { grid-template-columns: 1fr; } }
+</style>

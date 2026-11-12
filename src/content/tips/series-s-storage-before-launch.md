@@ -2,13 +2,14 @@
 title: "Check your Series S storage before GTA 6 launch day"
 description: "The Series S has the smallest drive of the current consoles. Free up space or add an expansion card before pre-load, not on launch night."
 pubDate: 2026-10-11
+updatedDate: 2026-11-12
 featured: true
 tags: ["series s", "storage", "launch"]
 platforms: ["xbox-series-s"]
 gear: ["series-s-storage"]
 ---
 
-Rockstar hasn't published GTA 6's install size yet, but it won't be small. The **Series S has the smallest drive of the current consoles** (the original 512 GB model leaves roughly **364 GB usable**), so don't leave this until launch night.
+Rockstar lists GTA 6 at **up to 212 GB**, and [preloads are already open](/news/gta-6-preload-live-times/). The **Series S has the smallest drive of the current consoles** (the original 512 GB model leaves roughly **364 GB usable**), so the game takes well over half the drive. Don't leave this until launch night.
 
 ## Do this now
 
@@ -20,6 +21,6 @@ Rockstar hasn't published GTA 6's install size yet, but it won't be small. The *
 
 An official **Storage Expansion Card** plugs into the back of the console and runs at the same speed as the internal drive, so GTA 6 can run straight from it. It's the cleanest fix if you play more than one big game at a time.
 
-## Pre-load day
+## Preload now
 
-When pre-loads open, start the download as soon as you can. If the install size is announced before then, we'll update the [Series S tracker](/series-s/) and post it on Telegram.
+Preloads opened on November 10. Start the download as soon as you have the space, and keep about 225 GB free to be safe. Details are in our [file size post](/news/gta-6-file-size-212-gb/).

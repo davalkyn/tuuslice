@@ -15,7 +15,7 @@ import seriesS from "../data/series-s.json";
 import { getAllPosts, getPosts, getVideos } from "../lib/content";
 import { SOCIALS, settings } from "../lib/site";
 
-const news = (await getPosts("news")).slice(0, 3);
+const news = (await getPosts("news")).slice(0, 6);
 const howTo = await getAllPosts(["guides", "tips"]);
 const guides = [...howTo.filter((p) => p.data.featured), ...howTo.filter((p) => !p.data.featured)].slice(0, 3);
 const blog = (await getPosts("blog")).slice(0, 1);

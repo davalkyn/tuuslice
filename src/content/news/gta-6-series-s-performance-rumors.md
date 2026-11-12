@@ -2,6 +2,7 @@
 title: "GTA 6 on Xbox Series S: 720p and 30 fps, according to early analysis"
 description: "Digital Foundry's early analysis points to about 720p on Series S against 1440p30 on PS5 and Series X. Rockstar hasn't confirmed any targets."
 pubDate: 2026-10-10
+updatedDate: 2026-11-12
 status: rumor
 tags: ["series s", "performance", "xbox"]
 sources:
@@ -10,6 +11,8 @@ sources:
   - name: "Digital Citizen: GTA 6 may offer a 60 FPS mode on PS5 and Series X"
     url: "https://www.digitalcitizen.life/gta-6-may-offer-a-60-fps-mode-on-ps5-and-xbox-series-x-but-it-could-arrive-after-launch/"
 ---
+
+**Update, November 12:** Rockstar has since [confirmed a 30 FPS target on every console](/news/gta-6-30-fps-all-consoles-confirmed/). The Series S resolution below is still unconfirmed.
 
 If you're playing GTA 6 on an **Xbox Series S**, set your expectations now. Early analysis points to a big gap between the Series S and the other two consoles, though **none of it is confirmed by Rockstar.**
 

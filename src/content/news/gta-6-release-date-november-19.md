@@ -2,6 +2,7 @@
 title: "GTA 6 release date: November 19, 2026 on PS5 and Xbox Series X|S"
 description: "GTA 6 launches November 19, 2026 on PS5 and Xbox Series X|S. Take-Two has reaffirmed the date. PC is expected later, most likely in 2027."
 pubDate: 2026-10-12
+updatedDate: 2026-11-12
 status: verified
 tags: ["release date", "ps5", "xbox"]
 featured: true
@@ -20,7 +21,7 @@ sources:
 
 ## What it means for you
 
-- If you're on **Series S**, check your free storage now. Rockstar hasn't published an install size yet, and the Series S has the smallest drive of the three consoles. Our [Series S tracker](/series-s/) will fill in the real number on launch day.
+- If you're on **Series S**, check your free storage now. The game needs [up to 212 GB](/news/gta-6-file-size-212-gb/), and the Series S has the smallest drive of the three consoles. [Preloads are already open](/news/gta-6-preload-live-times/).
 - If you're waiting on **PC**, there's no official date to plan around yet. Don't trust "leaked" PC dates until Rockstar posts one.
 
 ## Launch plan on the channel

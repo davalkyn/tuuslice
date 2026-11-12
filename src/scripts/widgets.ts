@@ -78,8 +78,9 @@ function nextOccurrence(day: string, start: string, durationMin: number, timeZon
   if (dow < 0 || Number.isNaN(hh)) return null;
   const offset = tzOffset(new Date(now), timeZone);
   const wall = new Date(now + offset);
-  let ahead = (dow - wall.getUTCDay() + 7) % 7;
-  for (let attempt = 0; attempt < 2; attempt++) {
+  // Start a week back so an overnight slot that began yesterday still counts while it runs.
+  let ahead = ((dow - wall.getUTCDay() + 7) % 7) - 7;
+  for (let attempt = 0; attempt < 3; attempt++) {
     const wallStart = Date.UTC(wall.getUTCFullYear(), wall.getUTCMonth(), wall.getUTCDate() + ahead, hh, mm || 0);
     const startUtc = wallStart - tzOffset(new Date(wallStart - offset), timeZone);
     const endUtc = startUtc + durationMin * 60_000;

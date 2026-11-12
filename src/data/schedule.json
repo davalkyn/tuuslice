@@ -1,9 +1,48 @@
 {
   "timezone": "Africa/Johannesburg",
-  "note": "Pre-launch: news reactions, setup tests and community hangs. Launch week schedule drops before Nov 19.",
+  "note": "Overnight streams, 11 PM to 8 AM South African time, through launch week.",
   "slots": [
-    { "day": "Tuesday", "start": "20:00", "durationMinutes": 120, "title": "GTA 6 news reactions + rumor check" },
-    { "day": "Thursday", "start": "20:00", "durationMinutes": 120, "title": "Series S streaming setup test" },
-    { "day": "Saturday", "start": "21:00", "durationMinutes": 180, "title": "Community night: Q&A and launch hype" }
+    {
+      "day": "Monday",
+      "start": "23:00",
+      "durationMinutes": 540,
+      "title": "GTA 6 overnight stream: news, preload and launch countdown"
+    },
+    {
+      "day": "Tuesday",
+      "start": "23:00",
+      "durationMinutes": 540,
+      "title": "GTA 6 overnight stream: news, preload and launch countdown"
+    },
+    {
+      "day": "Wednesday",
+      "start": "23:00",
+      "durationMinutes": 540,
+      "title": "GTA 6 overnight stream: news, preload and launch countdown"
+    },
+    {
+      "day": "Thursday",
+      "start": "23:00",
+      "durationMinutes": 540,
+      "title": "GTA 6 overnight stream: news, preload and launch countdown"
+    },
+    {
+      "day": "Friday",
+      "start": "23:00",
+      "durationMinutes": 540,
+      "title": "GTA 6 overnight stream: news, preload and launch countdown"
+    },
+    {
+      "day": "Saturday",
+      "start": "23:00",
+      "durationMinutes": 540,
+      "title": "GTA 6 overnight stream: news, preload and launch countdown"
+    },
+    {
+      "day": "Sunday",
+      "start": "23:00",
+      "durationMinutes": 540,
+      "title": "GTA 6 overnight stream: news, preload and launch countdown"
+    }
   ]
 }

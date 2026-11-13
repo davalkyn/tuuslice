@@ -1,0 +1,17 @@
+# GitHub Pages only. The real site is built by Astro and served by Cloudflare at
+# https://tuuslice.thevoid.workers.dev. Pages builds just the redirect pages below.
+exclude:
+  - src
+  - public
+  - automation
+  - worker
+  - node_modules
+  - dist
+  - README.md
+  - package.json
+  - package-lock.json
+  - astro.config.mjs
+  - tsconfig.json
+  - wrangler.jsonc
+  - "*.mjs"
+  - "*.jsonc"

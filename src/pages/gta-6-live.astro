@@ -1,0 +1,98 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Countdown from "../components/Countdown.astro";
+import Icon from "../components/Icon.astro";
+import JoinCTA from "../components/JoinCTA.astro";
+import LiveBadge from "../components/LiveBadge.astro";
+import PageHead from "../components/PageHead.astro";
+import Schedule from "../components/Schedule.astro";
+import { settings } from "../lib/site";
+
+// Questions people search before launch. Every answer links to the post that sources it.
+const faqs = [
+  { q: "When does GTA 6 come out?", a: "GTA 6 launches on November 19, 2026 for PS5 and Xbox Series X|S, unlocking at midnight local time.", link: "/news/gta-6-release-time-midnight-local/" },
+  { q: "Can I preload GTA 6?", a: "Yes. Digital preloads opened on November 10 on PS5 and Xbox Series X|S. Disc codes are reported to unlock from November 12.", link: "/news/gta-6-preload-live-times/" },
+  { q: "How big is GTA 6?", a: "Rockstar lists up to 212 GB of storage. Keep about 225 GB free to be safe, especially on Xbox Series S.", link: "/news/gta-6-file-size-212-gb/" },
+  { q: "Does GTA 6 run at 60 FPS?", a: "No. Rockstar confirmed a 30 FPS target on every console, including PS5 Pro. PS5 Pro gets PSSR and ray-traced shadows instead.", link: "/news/gta-6-30-fps-all-consoles-confirmed/" },
+  { q: "How does GTA 6 run on Xbox Series S?", a: "It targets 30 FPS like the other consoles. Rockstar hasn't published Series S resolution; we test it live and log results in our tracker.", link: "/series-s/" },
+  { q: "Where can I watch GTA 6 live?", a: `Watch tuuslice live on Kick at kick.com/${settings.kickSlug}, with overnight streams from 11 PM to 8 AM South African time through launch week.`, link: "/live/" },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BroadcastEvent",
+    name: "GTA 6 launch streams with tuuslice (2slice)",
+    description: "Overnight GTA 6 launch-week live streams on Kick: news, preload, launch night and Series S tests.",
+    isLiveBroadcast: true,
+    startDate: "2026-11-18T23:00:00+02:00",
+    url: settings.socials.kick,
+    publishedOn: { "@type": "BroadcastService", name: "Kick", url: "https://kick.com" },
+    performer: { "@id": new URL("/#creator", Astro.site).toString() },
+  },
+];
+---
+
+<BaseLayout
+  title="Watch GTA 6 live: launch streams, release time & FAQ"
+  description="Watch GTA 6 live with tuuslice (2slice) on Kick. Launch-night streams, release time, preload, file size, 30 FPS and Series S answers in one place."
+  jsonLd={jsonLd}
+>
+  <PageHead
+    eyebrow="GTA 6 launch week"
+    title="Watch GTA 6"
+    accent="live"
+    lead="tuuslice streams GTA 6 live on Kick as 2slice: launch night, first hours in Leonida, and Series S performance tests. Here's everything you need before midnight on November 19."
+  >
+    <div class="btn-row"><LiveBadge size="lg" /><a class="btn btn--ghost btn--lg" href="/live/">Open the player <Icon name="arrow" /></a></div>
+  </PageHead>
+
+  <section class="wrap section" style="padding-top: 0">
+    <div class="split">
+      <div class="panel glow-card glow-card--static" data-reveal>
+        <h2 class="h3">Countdown to launch</h2>
+        <Countdown />
+      </div>
+      <div class="panel glow-card glow-card--static" data-reveal style="--reveal-delay: 100ms">
+        <h2 class="h3">Stream schedule</h2>
+        <Schedule />
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap wrap--narrow section">
+    <h2 class="h2" data-reveal>GTA 6 launch <span class="grad-text">FAQ</span></h2>
+    <div class="faq" data-reveal-group>
+      {
+        faqs.map((f) => (
+          <details class="faq__item glow-card glow-card--static">
+            <summary><h3>{f.q}</h3></summary>
+            <p>{f.a} <a href={f.link}>Read more</a></p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <div class="wrap section"><JoinCTA title="Watch with" accent="the squad" /></div>
+</BaseLayout>
+
+<style>
+  .split { display: grid; grid-template-columns: 1fr 1.2fr; gap: 1.25rem; align-items: start; }
+  .panel { padding: clamp(1.4rem, 3vw, 2rem); display: grid; gap: 0.5rem; }
+  .faq { display: grid; gap: 0.75rem; margin-top: 1.5rem; }
+  .faq__item { padding: 1.1rem 1.3rem; }
+  .faq__item summary { cursor: pointer; list-style: none; }
+  .faq__item summary::-webkit-details-marker { display: none; }
+  .faq__item h3 { font-size: 1.25rem; display: inline; }
+  .faq__item summary::after { content: "+"; float: right; color: var(--pink-hot); font-family: var(--font-mono); }
+  .faq__item[open] summary::after { content: "–"; }
+  .faq__item p { margin-top: 0.7rem; color: var(--text-dim); }
+  .faq__item a { color: var(--pink-hot); }
+  @media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
+</style>

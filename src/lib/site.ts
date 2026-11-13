@@ -11,7 +11,7 @@ export const NAV = [
   { href: "/guides/", label: "Guides & Tips" },
   { href: "/series-s/", label: "Series S" },
   { href: "/videos/", label: "Videos" },
-  { href: "/live/", label: "Live" },
+  { href: "/gta-6-live/", label: "Live" },
   { href: "/blog/", label: "Blog" },
   { href: "/community/", label: "Community" },
 ] as const;

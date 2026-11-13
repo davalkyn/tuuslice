@@ -4,7 +4,7 @@ export { settings };
 
 export const SITE_NAME = settings.brand;
 export const SITE_DESCRIPTION =
-  "tuuslice: GTA 6 news, guides, tips and live streams on Kick. A fan-made community hub for the road to Leonida.";
+  "tuuslice (2slice on Kick): GTA 6 news, guides, tips, Series S performance and live streams. A fan-made community hub for the road to Leonida.";
 
 export const NAV = [
   { href: "/news/", label: "News" },

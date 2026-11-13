@@ -39,8 +39,14 @@ const jsonLd = [
     description: data.description,
     datePublished: data.pubDate.toISOString(),
     dateModified: (data.updatedDate ?? data.pubDate).toISOString(),
-    author: { "@type": "Person", name: SITE_NAME, url: Astro.site?.toString() },
-    publisher: { "@type": "Organization", name: SITE_NAME },
+    author: { "@id": new URL("/#creator", Astro.site).toString() },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      logo: { "@type": "ImageObject", url: new URL("/apple-touch-icon.png", Astro.site).toString() },
+    },
+    keywords: data.tags.join(", "),
+    articleSection: section.label,
     mainEntityOfPage: url,
     image: new URL(data.cover ?? "/og-default.png", Astro.site).toString(),
   },
@@ -60,6 +66,8 @@ const jsonLd = [
   title={data.title}
   description={data.description}
   image={data.cover}
+  imageWidth={data.cover ? 1200 : undefined}
+  imageHeight={data.cover ? 675 : undefined}
   type="article"
   publishedTime={data.pubDate}
   modifiedTime={data.updatedDate}

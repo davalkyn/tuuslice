@@ -15,7 +15,7 @@ const words = { news: "News", guides: "Guide", tips: "Tip", blog: "Blog", video:
 <div class:list={["cover", `cover--${kind}`, `cover--${size}`]} style={vtName ? `view-transition-name: ${vtName}` : undefined}>
   {
     src ? (
-      <img src={src} alt={alt} loading={eager ? "eager" : "lazy"} decoding="async" />
+      <img src={src} alt={alt} width="1200" height="675" loading={eager ? "eager" : "lazy"} fetchpriority={eager ? "high" : undefined} decoding="async" />
     ) : (
       <div class="cover__art" aria-hidden="true">
         <span class="cover__sun" />

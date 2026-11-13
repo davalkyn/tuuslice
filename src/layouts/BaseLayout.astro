@@ -15,6 +15,8 @@ interface Props {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   noindex?: boolean;
   bodyClass?: string;
+  imageWidth?: number;
+  imageHeight?: number;
 }
 
 const {
@@ -28,19 +30,47 @@ const {
   jsonLd,
   noindex = false,
   bodyClass,
+  imageWidth = 1200,
+  imageHeight = 630,
 } = Astro.props;
 
-const fullTitle = title ? `${title} · ${SITE_NAME}` : `${SITE_NAME}: GTA 6 news, guides & live streams`;
+// Google cuts titles at roughly 60-65 characters, so long headlines drop the brand suffix.
+const fullTitle = title
+  ? title.length > 55
+    ? title
+    : `${title} · ${SITE_NAME}`
+  : `${SITE_NAME} (2slice): GTA 6 news, guides & live streams`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image, Astro.site);
 
+const home = new URL("/", Astro.site).toString();
+// One identity for search engines: the site, the creator behind it, and every profile they run.
 const ldBlocks = [
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: SITE_NAME,
-    url: Astro.site?.toString(),
-    description: SITE_DESCRIPTION,
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": `${home}#website`,
+        name: SITE_NAME,
+        alternateName: settings.seo.aliases,
+        url: home,
+        description: SITE_DESCRIPTION,
+        inLanguage: "en",
+        publisher: { "@id": `${home}#creator` },
+      },
+      {
+        "@type": "Person",
+        "@id": `${home}#creator`,
+        name: SITE_NAME,
+        alternateName: settings.seo.aliases,
+        url: home,
+        image: new URL("/apple-touch-icon.png", Astro.site).toString(),
+        description: "GTA 6 streamer and creator. Live on Kick as 2slice, with news, guides and clips on YouTube and TikTok.",
+        sameAs: Object.values(settings.socials),
+        knowsAbout: ["Grand Theft Auto VI", "GTA 6", "Live streaming", "Kick"],
+      },
+    ],
   },
   ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
 ];
@@ -54,7 +84,11 @@ const ldBlocks = [
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="robots" content={noindex ? "noindex" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"} />
+    <meta name="author" content={SITE_NAME} />
+    {settings.seo.googleSiteVerification && <meta name="google-site-verification" content={settings.seo.googleSiteVerification} />}
+    {settings.seo.bingSiteVerification && <meta name="msvalidate.01" content={settings.seo.bingSiteVerification} />}
+    <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content="#0a0612" />
     <meta name="color-scheme" content="dark" />
 
@@ -64,8 +98,10 @@ const ldBlocks = [
     <meta property="og:type" content={type} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image:width" content={String(imageWidth)} />
+    <meta property="og:image:height" content={String(imageHeight)} />
+    <meta property="og:image:alt" content={title ?? fullTitle} />
+    <meta property="og:locale" content="en_US" />
     {publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
     {modifiedTime && <meta property="article:modified_time" content={modifiedTime.toISOString()} />}
     {section && <meta property="article:section" content={section} />}

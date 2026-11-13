@@ -15,6 +15,7 @@ backend:
     uploadMedia: "Upload {{path}}"
     deleteMedia: "Delete {{path}}"
 
+# Keep in step with SITE in astro.config.mjs.
 site_url: https://tuuslice.workers.dev
 display_url: https://tuuslice.workers.dev
 logo:

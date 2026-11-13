@@ -1,0 +1,74 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Icon from "../components/Icon.astro";
+import JoinCTA from "../components/JoinCTA.astro";
+import PageHead from "../components/PageHead.astro";
+import { SOCIALS, SITE_NAME, settings } from "../lib/site";
+
+const url = new URL("/about/", Astro.site).toString();
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  url,
+  name: "About tuuslice (2slice)",
+  mainEntity: { "@id": new URL("/#creator", Astro.site).toString() },
+};
+---
+
+<BaseLayout
+  title="About tuuslice (2slice on Kick)"
+  description="Who is tuuslice? A GTA 6 streamer and creator, live on Kick as 2slice, with news, guides, clips and a community on Discord and Telegram."
+  jsonLd={jsonLd}
+>
+  <PageHead
+    eyebrow="About"
+    title="Who is"
+    accent="tuuslice?"
+    lead="tuuslice is a GTA 6 streamer and creator, live on Kick as 2slice. This site is the home base: launch news, guides, tips, the Series S tracker and every place to follow along."
+  />
+
+  <section class="wrap wrap--narrow">
+    <div class="prose" data-reveal>
+      <h2>What you'll find here</h2>
+      <ul>
+        <li><a href="/news/">GTA 6 news</a>, summarized and labeled verified, rumor or unconfirmed, with links to the original reporting.</li>
+        <li><a href="/guides/">Guides and tips</a> for console players, from streaming setups to storage and settings.</li>
+        <li>The <a href="/series-s/">Series S performance tracker</a>: what GTA 6 actually runs like on the smallest Xbox.</li>
+        <li><a href="/live/">Live streams on Kick</a>, with the schedule shown in your own time zone.</li>
+      </ul>
+      <h2>Names you might know me by</h2>
+      <p>
+        <strong>tuuslice</strong> is the brand and this site. <strong>2slice</strong> is the Kick channel:
+        <a href={settings.socials.kick}>kick.com/{settings.kickSlug}</a>. The old Kick name <em>tuuslice</em> is no longer mine,
+        so please follow 2slice.
+      </p>
+    </div>
+
+    <h2 class="h3 profiles__title" data-reveal>Official profiles</h2>
+    <ul class="profiles" data-reveal-group>
+      {
+        SOCIALS.map((s) => (
+          <li>
+            <a class="profile glow-card" href={s.href} target="_blank" rel="me noopener noreferrer">
+              <Icon name={s.key} size={20} />
+              <span class="profile__name">{s.label}</span>
+              <span class="profile__handle mono">{s.handle}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="faint small">Fan-made. {SITE_NAME} is not affiliated with Rockstar Games or Take-Two Interactive.</p>
+  </section>
+
+  <div class="wrap section"><JoinCTA /></div>
+</BaseLayout>
+
+<style>
+  .profiles__title { margin-top: 2.5rem; margin-bottom: 1rem; }
+  .profiles { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 0.75rem; }
+  .profile { display: flex; align-items: center; gap: 0.7rem; padding: 0.9rem 1.1rem; text-decoration: none; color: inherit; }
+  .profile__name { font-weight: 600; }
+  .profile__handle { margin-left: auto; font-size: 0.75rem; color: var(--text-faint); }
+  .small { margin-top: 1.5rem; font-size: 0.85rem; }
+</style>

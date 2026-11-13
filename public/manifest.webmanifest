@@ -1,0 +1,13 @@
+{
+  "name": "tuuslice: GTA 6 news, guides & live streams",
+  "short_name": "tuuslice",
+  "description": "GTA 6 news, guides, tips and live streams from tuuslice (2slice on Kick).",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0612",
+  "theme_color": "#0a0612",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

@@ -16,8 +16,8 @@ backend:
     deleteMedia: "Delete {{path}}"
 
 # Keep in step with SITE in astro.config.mjs.
-site_url: https://tuuslice.workers.dev
-display_url: https://tuuslice.workers.dev
+site_url: https://tuuslice.thevoid.workers.dev
+display_url: https://tuuslice.thevoid.workers.dev
 logo:
   src: /favicon.svg
 

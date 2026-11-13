@@ -6,8 +6,8 @@ import sitemap, { ChangeFreqEnum } from "@astrojs/sitemap";
 
 // The public address of the site. Canonical URLs, the sitemap, robots.txt, RSS
 // and share previews are all built from it. Set SITE_URL in Cloudflare's build
-// settings, or change the fallback here (e.g. "https://tuuslice.com").
-const SITE = (process.env.SITE_URL || "https://tuuslice.workers.dev").replace(/\/+$/, "");
+// settings, or change the fallback here when you move to a custom domain.
+const SITE = (process.env.SITE_URL || "https://tuuslice.thevoid.workers.dev").replace(/\/+$/, "");
 
 // Last-modified dates for the sitemap, read from each post's frontmatter.
 const SECTION_PATHS = { news: "news", guides: "guides", tips: "tips", blog: "blog" };

@@ -2,7 +2,7 @@
 import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { defineConfig } from "astro/config";
-import sitemap from "@astrojs/sitemap";
+import sitemap, { ChangeFreqEnum } from "@astrojs/sitemap";
 
 // The public address of the site. Canonical URLs, the sitemap, robots.txt, RSS
 // and share previews are all built from it. Set SITE_URL in Cloudflare's build
@@ -35,10 +35,10 @@ export default defineConfig({
       serialize(item) {
         const path = new URL(item.url).pathname;
         const date = lastmod.get(path);
-        if (date) return { ...item, lastmod: date, changefreq: "weekly", priority: 0.7 };
-        if (path === "/") return { ...item, lastmod: newest, changefreq: "daily", priority: 1.0 };
-        if (/^\/(news|guides|tips|blog)\/$/.test(path)) return { ...item, lastmod: newest, changefreq: "daily", priority: 0.8 };
-        return { ...item, changefreq: "weekly", priority: 0.6 };
+        if (date) return { ...item, lastmod: date, changefreq: ChangeFreqEnum.WEEKLY, priority: 0.7 };
+        if (path === "/") return { ...item, lastmod: newest, changefreq: ChangeFreqEnum.DAILY, priority: 1.0 };
+        if (/^\/(news|guides|tips|blog)\/$/.test(path)) return { ...item, lastmod: newest, changefreq: ChangeFreqEnum.DAILY, priority: 0.8 };
+        return { ...item, changefreq: ChangeFreqEnum.WEEKLY, priority: 0.6 };
       },
     }),
   ],
